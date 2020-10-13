@@ -22,8 +22,5 @@
         "sass-loader": "^8.0.0",
         "vue": "^2.6.11",
         "vue-template-compiler": "^2.6.10"
-    },
-    "dependencies": {
-        "vue-router": "^3.3.2"
     }
 }
