@@ -77,6 +77,10 @@ git clone https://github.com/larago-go/larago.git
 ```sh
 npm install
 ```
+and
+```sh
+npm run dev
+```
 3. Rename the file .env.example
 ```sh
 mv .env.example .env
