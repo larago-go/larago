@@ -7,22 +7,6 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import Vue from 'vue'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import VueTheMask from 'vue-the-mask'
-import Multiselect from 'vue-multiselect'
-import VueRouter from 'vue-router'
-
-Vue.use(VueRouter)
-
-// register globally
-Vue.component('multiselect', Multiselect)
-// Install BootstrapVue
-Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-Vue.use(IconsPlugin)
-
-Vue.use(VueTheMask)
 
 /**
  * The following block of code may be used to automatically register your
@@ -32,8 +16,8 @@ Vue.use(VueTheMask)
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// const files = require.context('./', true, /\.vue$/i);
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -43,10 +27,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-const router = new VueRouter({
-    routes
-  })
+
 const app = new Vue({
     el: '#app',
-    router,
 });
