@@ -84,12 +84,14 @@ mv .env.example .env
 
 4. Сreate a database by default this is mysql(when creating use utf8mb4), you can change it by uncomplexing the necessary values in the files /config/Database.go and /config/CasbinRole.go
 
-5. inside your project run the command
+5. configure the file .env
+
+6. inside your project run the command
 ```sh
 go run main.go
 ```
 
-6. go to address
+7. go to address
 ```sh
 http://localhost:8080/
 ```
