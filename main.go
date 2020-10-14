@@ -91,6 +91,7 @@ func main() {
 
     //gin_html_and_static
 	r.Static("/public", "./public")
+	r.Static("/node_modules", "./node_modules")
 	r.LoadHTMLGlob("resources/views/*.html")
 	//end_gin_html_and_static
 
