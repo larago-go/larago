@@ -68,7 +68,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Installation
 
-1. Clone the repository to the src/ folder of your directory $GOPATH
+1. Clone the repository to the src/ folder of your directory [https://golang.org/doc/gopath_code.html]($GOPATH)
 
 ```sh
 git clone https://github.com/larago-go/larago.git
