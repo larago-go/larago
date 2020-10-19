@@ -102,17 +102,17 @@ func main() {
     //gin_route_middleware
 	r.GET("/", Controllers.GetWelcome)
 
-	v1 := r.Group("/users")
-	Controllers.UsersRegister(v1.Group("/"))
+	users := r.Group("/users")
+	Controllers.UsersRegister(users.Group("/"))
 	
-	r1 := r.Group("/home")
-	Controllers.Home(r1.Group("/"))
+	home := r.Group("/home")
+	Controllers.Home(home.Group("/"))
 
-	r2 := r.Group("/role")
+	role := r.Group("/role")
 	//Auth_Middleware
-	r2.Use(Middleware.AuthMiddleware(true))
+	role.Use(Middleware.AuthMiddleware(true))
 	//end_Auth_Middleware
-	Controllers.CasbinRole(r2.Group("/"))
+	Controllers.CasbinRole(role.Group("/"))
 	//end_gin_route_middleware
 
 	//test
