@@ -41,7 +41,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Larago
-[![Product Name Screen Shot][product-screenshot]]
+![Product Name Screen Shot][product-screenshot]
 
 Structure-inspired laravel written in langue Go. The classic structure of the MVC with the implementation of basic authorization and a role management system
  
