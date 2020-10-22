@@ -41,6 +41,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Larago
+[![Product Name Screen Shot][product-screenshot]]
 
 Structure-inspired laravel written in langue Go. The classic structure of the MVC with the implementation of basic authorization and a role management system
  
@@ -115,3 +116,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Project Link: [https://github.com/larago-go/larago](https://github.com/larago-go/larago)
 Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAleksey)
+
+<!-- IMAGES -->
+
+[product-screenshot]: larago_git.png
