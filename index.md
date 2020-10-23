@@ -6,6 +6,9 @@
 <br />
 <p align="center">
 
+  <a href="https://github.com/larago-go/larago">
+    <img src="golang-larago.png" alt="Logo" width="80" height="80">
+  </a>
 
   <h3 align="center">LARAGO</h3>
 
