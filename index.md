@@ -1,37 +1,124 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/larago-go/larago/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+  <h3 align="center">LARAGO</h3>
 
-- Bulleted
-- List
+  <p align="center">
+    Structure-inspired laravel written in langue Go
+    <br />
+    <a href="https://github.com/larago-go/larago"><strong>Useful links and documents »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/larago-go">Larago</a>
+    ·
+    <a href="https://github.com/gin-gonic/gin">Gin framework</a>
+    ·
+    <a href="https://gorm.io/docs/">ORM GORM</a>
+    ·
+    <a href="https://docs.mongodb.com/manual/crud/">MongoDB Crud</a>
+    ·
+    <a href="https://github.com/casbin/casbin">Casbin Role</a>
+  </p>
+</p>
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
+<!-- TABLE OF CONTENTS -->
+## Table of Contents
+
+* [About the Project](#about-the-project)
+* [Specification](#specification)
+* [Getting Started](#getting-started)
+  * [Installation](#installation)
+* [License](#license)
+* [Contact](#contact)
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Larago
+![Product Name Screen Shot][product-screenshot]
+
+Structure-inspired laravel written in langue Go. The classic structure of the MVC with the implementation of basic authorization and a role management system
+ 
+
+<!-- Specification -->
+## Specification
+
+Supports data bases mysql, postgres, sqlite, sqlserver and mongoDB. Session storage cookie, memcache and redis.
+
+Under the hood:
+
+* Gin framework - heart of the project (route, middleware, html template and other) 
+* ORM GORM - the fantastic ORM library for Golang (Supports data bases mysql, postgres, sqlite, sqlserver and crud)
+* MongoDB - MongoDB (Supports data bases mongoDB and crud)
+* Casbin - An authorization library that supports access control models like ACL, RBAC, ABAC for Golang
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+
+
+### Installation
+
+1. Clone the repository to the src/ folder of your directory $GOPATH: [https://golang.org/doc/gopath_code.html](https://golang.org/doc/gopath_code.html)
+
+```sh
+git clone https://github.com/larago-go/larago.git
+```
+2. Install NPM packages
+```sh
+npm install
+```
+and
+```sh
+npm run dev
+```
+3. Rename the file .env.example
+```sh
+mv .env.example .env
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+4. Сreate a database by default this is mysql(when creating use utf8mb4), you can change it by uncomplexing the necessary values in the files /config/Database.go and /config/CasbinRole.go
 
-### Jekyll Themes
+5. configure the file .env
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/larago-go/larago/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+6. inside your project run the command
+```sh
+go run main.go
+```
 
-### Support or Contact
+7. go to address
+```sh
+http://localhost:8080/
+```
+enjoy!
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+
+
+<!-- CONTACT -->
+## Contact
+
+
+Project Link: [https://github.com/larago-go/larago](https://github.com/larago-go/larago)
+Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAleksey)
+
+<!-- IMAGES -->
+
+[product-screenshot]: larago_git.png
