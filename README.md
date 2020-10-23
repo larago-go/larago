@@ -6,6 +6,9 @@
 <br />
 <p align="center">
 
+  <a href="https://github.com/larago-go/larago">
+    <img src="larago-logo_git.png" alt="Logo" width="100" height="100">
+  </a>
 
   <h3 align="center">LARAGO</h3>
 
