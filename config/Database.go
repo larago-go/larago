@@ -62,6 +62,8 @@ func Init() {
 // Run the migrations.
 
 type UserModel struct {
+	
+	gorm.Model
 	ID           uint    `gorm:"column:id;primary_key"`
 	Name         string  `gorm:"column:name;unique_index"`
 	Email        string  `gorm:"column:email;unique_index"`
@@ -73,7 +75,8 @@ type UserModel struct {
 
 
 type CasbinRoleModel struct {
-
+	
+        gorm.Model
 	ID       uint    `gorm:"column:id;primary_key"`
 	RoleName string  `gorm:"column:v0"`
 	Path     string  `gorm:"column:v1"`
