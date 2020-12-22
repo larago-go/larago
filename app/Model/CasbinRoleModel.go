@@ -2,6 +2,9 @@ package Model
 
 import (
 	_ "fmt"
+	//database_SQL
+	"gorm.io/gorm"
+	//end_database_SQL
 	//MongoDB
 	//"go.mongodb.org/mongo-driver/bson/primitive"
 	//end MongoDB
@@ -9,7 +12,7 @@ import (
 
 //database_SQL
 type CasbinRoleModel struct {
-
+        gorm.Model
 	ID       uint    `gorm:"column:id;primary_key"`
 	RoleName string  `gorm:"column:v0;unique_index"`
 	Path     string  `gorm:"column:v1"`
