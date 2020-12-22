@@ -73,6 +73,9 @@ type UserModel struct {
 
 }
 
+//func (UserModel) TableName() string {
+//	return "custom_table_users"
+// }
 
 type CasbinRoleModel struct {
 	
@@ -82,4 +85,8 @@ type CasbinRoleModel struct {
 	Path     string  `gorm:"column:v1"`
 	Method   string  `gorm:"column:v2"`
 
-} 
+}
+
+//func (CasbinRoleModel) TableName() string {
+//	return "casbin_rule"
+// }
