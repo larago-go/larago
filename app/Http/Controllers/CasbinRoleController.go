@@ -100,7 +100,7 @@ func ViewCasbinRole(c *gin.Context) {
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
-		c.Redirect(http.StatusFound, "/users/login")
+		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
     //Gorm_SQL
@@ -167,7 +167,7 @@ func ViewCasbinRole(c *gin.Context) {
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
-		c.Redirect(http.StatusFound, "/users/login")
+		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
   
