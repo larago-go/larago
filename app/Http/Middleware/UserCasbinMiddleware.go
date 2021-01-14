@@ -22,7 +22,7 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 			//c.JSON(http.StatusForbidden, gin.H{
 			//	"message": "not authed",
 			//})
-			c.Redirect(http.StatusFound, "/users/login")
+			c.Redirect(http.StatusFound, "/auth/login")
 			c.Abort()
 		}
        sub := session.Get("user_role")
@@ -53,3 +53,4 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 
 	}
 }
+
