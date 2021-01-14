@@ -95,12 +95,21 @@ func main() {
 	r.LoadHTMLGlob("resources/views/*.html")
 	//end_gin_html_and_static
 
+
+    //gin_route_middleware
+    
+	r.GET("/", Controllers.GetWelcome)
+
+    auth := r.Group("/auth")
+	Controllers.Auth(auth.Group("/"))
+
 	//Casbin_Role_Middleware
 	//r.Use(Middleware.AuthCasbinMiddleware(true))
     //end_Casbin_Role_Middleware
 
-    //gin_route_middleware
-	r.GET("/", Controllers.GetWelcome)
+    //Auth_Middleware
+	r.Use(Middleware.AuthMiddleware(true))
+	//end_Auth_Middleware
 
 	users := r.Group("/users")
 	Controllers.UsersRegister(users.Group("/"))
@@ -109,9 +118,6 @@ func main() {
 	Controllers.Home(home.Group("/"))
 
 	role := r.Group("/role")
-	//Auth_Middleware
-	role.Use(Middleware.AuthMiddleware(true))
-	//end_Auth_Middleware
 	Controllers.CasbinRole(role.Group("/"))
 	//end_gin_route_middleware
 
@@ -129,3 +135,4 @@ func main() {
     PORT := os.Getenv("PORT")
 	r.Run(PORT) // listen and serve on 0.0.0.0:8080
 }
+
