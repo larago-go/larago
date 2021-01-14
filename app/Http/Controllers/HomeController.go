@@ -24,7 +24,7 @@ func ViewHome(c *gin.Context) {
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
-		c.Redirect(http.StatusFound, "/users/login")
+		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
   
