@@ -1,17 +1,15 @@
 package Controllers
 
 import (
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 
-  "github.com/gin-gonic/gin"
-  "github.com/gin-contrib/sessions"
-	
-   "net/http"
-
+	"net/http"
 )
 
 func Home(router *gin.RouterGroup) {
 
-  router.GET("/", ViewHome)
+	router.GET("/", ViewHome)
 
 }
 
@@ -27,6 +25,7 @@ func ViewHome(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
-  
-	  c.HTML(http.StatusOK, "home.html", gin.H{ "session_id": sessionID, "session_name": sessionName })
-  }
+
+	c.HTML(http.StatusOK, "home.html", gin.H{"session_id": sessionID, "session_name": sessionName})
+}
+
