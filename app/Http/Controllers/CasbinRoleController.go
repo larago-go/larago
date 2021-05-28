@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/utrack/gin-csrf"
 	csrf "github.com/utrack/gin-csrf"
 	//MongoDB
 	//"go.mongodb.org/mongo-driver/bson"
