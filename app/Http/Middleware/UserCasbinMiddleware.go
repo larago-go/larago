@@ -1,15 +1,12 @@
 package Middleware
 
 import (
-
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"github.com/gin-contrib/sessions"
 	"larago/config"
+	"net/http"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 )
-
-
 
 func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -17,7 +14,7 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 		sessionID := session.Get("user_id")
 		//Casbinrole
 		e := config.CasbinRole()
-		
+
 		if sessionID == nil {
 			//c.JSON(http.StatusForbidden, gin.H{
 			//	"message": "not authed",
@@ -25,9 +22,9 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 			c.Redirect(http.StatusFound, "/auth/login")
 			c.Abort()
 		}
-       sub := session.Get("user_role")
-       obj := c.Request.URL.Path
-       act := c.Request.Method
+		sub := session.Get("user_role")
+		obj := c.Request.URL.Path
+		act := c.Request.Method
 
 		res, err := e.Enforce(sub, obj, act)
 
@@ -49,7 +46,6 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
 
 	}
 }
