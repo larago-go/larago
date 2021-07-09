@@ -83,5 +83,5 @@ type CasbinRoleModel struct {
 }
 
 //func (CasbinRoleModel) TableName() string {
-//	return "casbin_rule"
+//	return "casbin_user_role"
 // }
