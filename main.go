@@ -98,23 +98,24 @@ func main() {
 
 	auth := r.Group("/auth")
 	Controllers.Auth(auth.Group("/"))
-
-	//Casbin_Role_Middleware
-	//r.Use(Middleware.AuthCasbinMiddleware(true))
-	//end_Casbin_Role_Middleware
-
+	
 	//Auth_Middleware
 	r.Use(Middleware.AuthMiddleware(true))
 	//end_Auth_Middleware
 
+	home := r.Group("/home")
+	Controllers.Home(home.Group("/"))
+	
+	//Casbin_Role_Middleware
+	//r.Use(Middleware.AuthCasbinMiddleware(true))
+	//end_Casbin_Role_Middleware
+
 	users := r.Group("/users")
 	Controllers.UsersRegister(users.Group("/"))
 
-	home := r.Group("/home")
-	Controllers.Home(home.Group("/"))
-
 	role := r.Group("/role")
 	Controllers.CasbinRole(role.Group("/"))
+	
 	//end_gin_route_middleware
 
 	//test
