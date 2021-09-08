@@ -58,7 +58,7 @@ Under the hood:
 
 * Gin framework - heart of the project (route, middleware, html template and other) 
 * ORM GORM - the fantastic ORM library for Golang (Supports data bases mysql, postgres, sqlite, sqlserver and crud)
-* MongoDB - MongoDB (Supports data bases mongoDB and crud)
+* MongoDB - MongoDB (Supports data bases mongoDB and crud) see [https://github.com/larago-go/larago-mongodb](https://github.com/larago-go/larago-mongodb)
 * Casbin - An authorization library that supports access control models like ACL, RBAC, ABAC for Golang
 
 
