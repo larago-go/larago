@@ -9,16 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
 	"golang.org/x/crypto/bcrypt"
-	//MongoDB
-	//"go.mongodb.org/mongo-driver/bson"
-	//"go.mongodb.org/mongo-driver/mongo"
-	//"go.mongodb.org/mongo-driver/mongo/options"
-	//"time"
-	//"log"
-	//"context"
-	//"os"
-	//"github.com/joho/godotenv"
-	//end MongoDB
 )
 
 type PasswordValidation struct {
@@ -61,35 +51,6 @@ func UsersRegistration(c *gin.Context) {
 	config.DB.Save(&user)
 	//end Gorm_SQL
 
-	//MongoDB
-
-	////env
-	//errenv := godotenv.Load()
-	//  if errenv != nil {
-	//      panic("Error loading .env file")
-	//    }
-	//DB_DATABASE := os.Getenv("DB_DATABASE")
-
-	//collection := config.MongoClient.Database(DB_DATABASE).Collection("usermodels")
-	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-
-	//defer cancel()
-
-	//_, err_post := collection.InsertOne(ctx, user)
-
-	//if err_post != nil {
-	//  c.JSON(http.StatusBadRequest, gin.H{
-	//    "msg": "A user with the same name already exists",
-	//  })
-	//}
-	//opt := options.Index()
-	//opt.SetUnique(true)
-	//index := mongo.IndexModel{Keys: bson.M{"name": 1}, Options: opt}
-	//if _, err := collection.Indexes().CreateOne(ctx, index); err != nil {
-	//log.Println("Could not create index:", err)
-	//}
-	//end MongoDB
-
 	// c.JSON(http.StatusOK, gin.H{"data": insertResult.InsertedID, "data1": user})
 	c.Redirect(http.StatusFound, "/home")
 }
@@ -108,32 +69,6 @@ func UsersLogin(c *gin.Context) {
 	//Gorm_SQL
 	config.DB.Where("email = ?", input.Email).First(&model)
 	//end Gorm_SQL
-
-	//MongoDB
-
-	////env
-	//errenv := godotenv.Load()
-	//  if errenv != nil {
-	//      panic("Error loading .env file")
-	//    }
-	//DB_DATABASE := os.Getenv("DB_DATABASE")
-
-	//collection := config.MongoClient.Database(DB_DATABASE).Collection("usermodels")
-
-	//ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-
-	//defer cancel()
-
-	//filter := bson.M{"email": input.Email}
-
-	//errmongo := collection.FindOne(ctx, filter).Decode(&model)
-
-	//if errmongo != nil {
-
-	//log.Fatal("err collections users")
-
-	//}
-	//end MongoDB
 
 	bytePassword := []byte(input.Password)
 	byteHashedPassword := []byte(model.Password)
@@ -207,3 +142,4 @@ func ViewUsersRegistration(c *gin.Context) {
 	}
 
 }
+
