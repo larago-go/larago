@@ -6,14 +6,14 @@
                 <div class="card-header">Update Users Edit</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/users/list/{{ .name }}/edit">
+                    <form method="POST" action="/users/list/{{ .id }}/edit">
                         
                           
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Username</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="" placeholder="{{ .name }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ .name }}" placeholder="{{ .name }}" required autocomplete="name" autofocus>
 
                        
                             </div>
@@ -24,7 +24,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="" placeholder="{{ .email }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ .email }}" placeholder="{{ .email }}" required autocomplete="email">
 
               
                             </div>
@@ -35,7 +35,7 @@
                             <label for="role" class="col-md-4 col-form-label text-md-right">Role</label>
 
                             <div class="col-md-6">
-                                <input id="role" type="text" class="form-control" name="role" value="" placeholder="{{ .role }}" required autocomplete="role" autofocus>
+                                <input id="role" type="text" class="form-control" name="role" value="{{ .role }}" placeholder="{{ .role }}" required autocomplete="role" autofocus>
 
                        
                             </div>
@@ -47,7 +47,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control " name="password" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control" name="password" required  autocomplete="new-password">
 
                             </div>
                         </div>
