@@ -9,9 +9,6 @@ import (
 	//database_SQL
 	gormadapter "github.com/casbin/gorm-adapter/v3"
 	//end_database_SQL
-	//mongodb
-	//"github.com/casbin/mongodb-adapter/v2"
-	//end_mongodb
 )
 
 func CasbinRole() *casbin.Enforcer {
@@ -38,8 +35,6 @@ func CasbinRole() *casbin.Enforcer {
 	//a, errcasbindb := gormadapter.NewAdapter("sqlite3", "/tmp/gorm.db", true)
 	//mssql
 	//a, errcasbindb := gormadapter.NewAdapter("mssql", "sqlserver://"+DB_USERNAME+":"+DB_PASSWORD+"@"+DB_HOST+":"+DB_PORT+"?database="+DB_DATABASE, true)
-	//mongodb
-	//a, errcasbindb := mongodbadapter.NewAdapter("mongodb://"+DB_USERNAME+":"+DB_PASSWORD+"@"+DB_HOST+":"+DB_PORT)
 
 	if errcasbindb != nil {
 		panic("Failed to connect to database!")
@@ -55,3 +50,4 @@ func CasbinRole() *casbin.Enforcer {
 
 	return e
 }
+
