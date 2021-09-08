@@ -29,10 +29,6 @@ func main() {
 	config.Init()
 	//end_database_SQL
 
-	//Mongodb
-	//config.Init_Mongo()
-	//end_Mongodb
-
 	//env
 	errenv := godotenv.Load()
 	if errenv != nil {
@@ -98,14 +94,14 @@ func main() {
 
 	auth := r.Group("/auth")
 	Controllers.Auth(auth.Group("/"))
-	
+
 	//Auth_Middleware
 	r.Use(Middleware.AuthMiddleware(true))
 	//end_Auth_Middleware
 
 	home := r.Group("/home")
 	Controllers.Home(home.Group("/"))
-	
+
 	//Casbin_Role_Middleware
 	//r.Use(Middleware.AuthCasbinMiddleware(true))
 	//end_Casbin_Role_Middleware
@@ -115,7 +111,7 @@ func main() {
 
 	role := r.Group("/role")
 	Controllers.CasbinRole(role.Group("/"))
-	
+
 	//end_gin_route_middleware
 
 	//test
