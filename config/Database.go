@@ -52,6 +52,7 @@ func Init() {
 
 	db.AutoMigrate(&UserModel{})
 	db.AutoMigrate(&CasbinRoleModel{})
+	db.AutoMigrate(&ResPassUserModel{})
 
 	//End Migrations.
 
@@ -85,3 +86,15 @@ type CasbinRoleModel struct {
 //func (CasbinRoleModel) TableName() string {
 //	return "casbin_user_role"
 // }
+
+type ResPassUserModel struct {
+	gorm.Model
+	ID       uint   `gorm:"column:id;primary_key"`
+	Email    string `gorm:"column:email"`
+	Url      string `gorm:"column:url"`
+	Url_full string `gorm:"column:url_full"`
+}
+
+//func (ResPassUserModel) TableName() string {
+//	return "custom_res_pass_users"
+//}
