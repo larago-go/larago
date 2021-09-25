@@ -95,6 +95,9 @@ func main() {
 	auth := r.Group("/auth")
 	Controllers.Auth(auth.Group("/"))
 
+	res_pass := r.Group("/login")
+	Controllers.Res_pass(res_pass.Group("/"))
+
 	//Auth_Middleware
 	r.Use(Middleware.AuthMiddleware(true))
 	//end_Auth_Middleware
