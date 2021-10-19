@@ -124,7 +124,15 @@ Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAle
 <!-- CRUD -->
 ## CRUD
 
-View and edit the file crud.bash 
+View and edit the file crud.bash
+```sh
+set up variables
+model=ExampleModel
+model_l=examplemodel
+model_url=example
+controller=ExampleController
+fields=('Title  string `gorm:"column:title"`' 'Text  string `gorm:"column:text"`' 'Author  string `gorm:"column:author"`')
+```
 ```sh
 run
 sh crud.bash
