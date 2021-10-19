@@ -107,19 +107,6 @@ http://localhost:8080/
 enjoy!
 
 
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-
-Project Link: [https://github.com/larago-go/larago](https://github.com/larago-go/larago)
-Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAleksey)
 
 <!-- CRUD(creating a model, controller, views) -->
 ## CRUD
@@ -137,6 +124,20 @@ fields=('Title  string `gorm:"column:title"`' 'Text  string `gorm:"column:text"`
 run
 sh crud.bash
 ```
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+
+
+<!-- CONTACT -->
+## Contact
+
+
+Project Link: [https://github.com/larago-go/larago](https://github.com/larago-go/larago)
+Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAleksey)
 
 <!-- IMAGES -->
 
