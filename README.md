@@ -123,7 +123,7 @@ Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAle
 
 <!-- CRUD(creating a model, controller, views) -->
 ## CRUD
-
+CRUD(creating a model, controller, views) | 
 View and edit the file crud.bash
 ```sh
 set up variables
