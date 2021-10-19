@@ -124,10 +124,9 @@ Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAle
 <!-- CRUD -->
 ## CRUD
 
-View and edit the file crud.bash
-run 
-
+View and edit the file crud.bash 
 ```sh
+run
 sh crud.bash
 ```
 
