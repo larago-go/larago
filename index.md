@@ -39,6 +39,7 @@
 * [Specification](#specification)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
+* [CRUD(creating a model, controller, views)](#CRUD)
 * [License](#license)
 * [Contact](#contact)
 
@@ -60,7 +61,7 @@ Under the hood:
 
 * Gin framework - heart of the project (route, middleware, html template and other) 
 * ORM GORM - the fantastic ORM library for Golang (Supports data bases mysql, postgres, sqlite, sqlserver and crud)
-* MongoDB - MongoDB (Supports data bases mongoDB and crud)
+* MongoDB - MongoDB (Supports data bases mongoDB and crud) see [https://github.com/larago-go/larago-mongodb](https://github.com/larago-go/larago-mongodb)
 * Casbin - An authorization library that supports access control models like ACL, RBAC, ABAC for Golang
 
 
@@ -107,6 +108,24 @@ http://localhost:8080/
 ```
 enjoy!
 
+
+
+<!-- CRUD(creating a model, controller, views) -->
+## CRUD
+CRUD(creating a model, controller, views) | 
+View and edit the file crud.bash
+```sh
+set up variables
+model=ExampleModel
+model_l=examplemodel
+model_url=example
+controller=ExampleController
+fields=('Title  string `gorm:"column:title"`' 'Text  string `gorm:"column:text"`' 'Author  string `gorm:"column:author"`')
+```
+```sh
+run
+sh crud.bash
+```
 
 <!-- LICENSE -->
 ## License
