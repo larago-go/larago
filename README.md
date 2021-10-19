@@ -37,9 +37,9 @@
 * [Specification](#specification)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
+* [CRUD(creating a model, controller, views)](#CRUD)
 * [License](#license)
 * [Contact](#contact)
-* [CRUD(creating a model, controller, views)](#CRUD)
 
 
 
