@@ -39,7 +39,7 @@
   * [Installation](#installation)
 * [License](#license)
 * [Contact](#contact)
-* [CRUDа](#CRUD)
+* [CRUD(creating a model, controller, views)](#CRUD)
 
 
 
@@ -121,7 +121,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Project Link: [https://github.com/larago-go/larago](https://github.com/larago-go/larago)
 Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAleksey)
 
-<!-- CRUD -->
+<!-- CRUD(creating a model, controller, views) -->
 ## CRUD
 
 View and edit the file crud.bash
