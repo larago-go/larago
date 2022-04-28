@@ -4,9 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import "../css/app.css";
+
 require('./bootstrap');
 
-window.Vue = require('vue');
+import { createApp, h } from 'vue'
+
+import App from './App'
+
+import router from './router'
+
+import admin_index_js from './Admin/index'
 
 /**
  * The following block of code may be used to automatically register your
@@ -14,20 +22,20 @@ window.Vue = require('vue');
  * components and automatically register them with their "basename".
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+const app = createApp({
+
+  render: ()=>h(App)
+
+})
+
+app.use(router)
+
+app.use(admin_index_js)
+
+app.mount('#app')
+

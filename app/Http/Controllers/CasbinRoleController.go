@@ -4,9 +4,11 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 )
 
@@ -22,6 +24,9 @@ func CasbinRole(router *gin.RouterGroup) {
 	router.GET("/list/:id/delete", DeleteCasbinRole)
 	router.GET("/list", ViewCasbinRole)
 	router.GET("/add", AddCasbinRole)
+	router.GET("/api/add", ApiAddCasbinRole)
+	router.GET("/api/list", ApiViewCasbinRole)
+	router.GET("/api/list/:id/delete", ApiDeleteCasbinRole)
 
 }
 
@@ -44,8 +49,17 @@ func AddPostCasbinRole(c *gin.Context) {
 	config.DB.Save(&role)
 	//end_Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": role})
-	c.Redirect(http.StatusFound, "/role/list")
+	headerContentTtype := c.Request.Header.Get("Content-Type")
+
+	if headerContentTtype != "application/json" {
+
+		c.Redirect(http.StatusFound, "/role/list")
+
+	} else {
+
+		c.IndentedJSON(http.StatusCreated, role)
+
+	}
 }
 
 func ViewCasbinRole(c *gin.Context) {
@@ -67,7 +81,37 @@ func ViewCasbinRole(c *gin.Context) {
 	config.DB.Find(&model)
 	//end_Gorm_SQL
 
-	c.HTML(http.StatusOK, "casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
+	//env
+	env := godotenv.Load()
+
+	if env != nil {
+
+		panic("Error loading .env file")
+
+	}
+	//end_env
+
+	template := os.Getenv("TEMPLATE")
+
+	switch {
+
+	case template == "vue":
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	case template == "html":
+
+		//HTML template
+		c.HTML(http.StatusOK, "casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
+
+	default:
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	}
+
 }
 
 func AddCasbinRole(c *gin.Context) {
@@ -83,7 +127,37 @@ func AddCasbinRole(c *gin.Context) {
 		c.Abort()
 	}
 
-	c.HTML(http.StatusOK, "casbin_role_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+	//env
+	env := godotenv.Load()
+
+	if env != nil {
+
+		panic("Error loading .env file")
+
+	}
+	//end_env
+
+	template := os.Getenv("TEMPLATE")
+
+	switch {
+
+	case template == "vue":
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	case template == "html":
+
+		//HTML template
+		c.HTML(http.StatusOK, "casbin_role_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+
+	default:
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	}
+
 }
 
 func DeleteCasbinRole(c *gin.Context) {
@@ -106,4 +180,76 @@ func DeleteCasbinRole(c *gin.Context) {
 
 	//c.JSON(http.StatusOK, gin.H{"data": true})
 	c.Redirect(http.StatusFound, "/role/list")
+}
+
+func ApiViewCasbinRole(c *gin.Context) {
+
+	//Gorm_SQL
+	var model []Model.CasbinRoleModel
+	//end_Gorm_SQL
+
+	session := sessions.Default(c)
+	sessionID := session.Get("user_id")
+	sessionName := session.Get("user_name")
+
+	if sessionID == nil {
+		//c.JSON(http.StatusForbidden, gin.H{
+		//	"message": "not authed",
+		//})
+
+		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+
+		c.Abort()
+
+	}
+
+	//Gorm_SQL
+	config.DB.Find(&model)
+	//end_Gorm_SQL
+
+	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+
+}
+
+func ApiAddCasbinRole(c *gin.Context) {
+
+	session := sessions.Default(c)
+	sessionID := session.Get("user_id")
+	sessionName := session.Get("user_name")
+
+	if sessionID == nil {
+		//c.JSON(http.StatusForbidden, gin.H{
+		//	"message": "not authed",
+		//})
+
+		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+
+		c.Abort()
+
+	}
+
+	//c.JSON(http.StatusOK, gin.H{"data": model})
+	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+
+}
+
+func ApiDeleteCasbinRole(c *gin.Context) {
+	// Get model if exist
+
+	var model Model.CasbinRoleModel
+
+	//Gorm_SQL
+	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	e := config.CasbinRole()
+
+	e.RemovePolicy(model.RoleName, model.Path, model.Method)
+
+	config.DB.Delete(&model)
+	//end_Gorm_SQL
+
+	c.IndentedJSON(http.StatusOK, gin.H{"data": true})
 }

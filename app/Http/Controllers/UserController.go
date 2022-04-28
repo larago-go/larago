@@ -4,9 +4,11 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -14,8 +16,8 @@ import (
 type UsersValidation struct {
 	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
 	Email    string `form:"email" json:"email" binding:"required,email"`
-	Role     string `form:"role" json:"role" binding:"required"`
-	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
+	Role     string `form:"role" json:"role"`
+	Password string `form:"password" json:"password"`
 }
 
 type UsersPasswordValidation struct {
@@ -25,12 +27,18 @@ type UsersPasswordValidation struct {
 }
 
 func UsersRegister(router *gin.RouterGroup) {
+
 	router.POST("/post_add", UsersAddPost)
 	router.POST("/list/:id/edit", UpdateUsers)
 	router.GET("/list/:id/delete", DeleteUsers)
 	router.GET("/add", ViewAddUsers)
 	router.GET("/list", ViewUsersList)
 	router.GET("/list/:id", ViewUsersListPrev)
+	router.GET("/api/list", ApiViewUsersList)
+	router.GET("/api/add", ApiViewAddUsers)
+	router.GET("/api/list/:id", ApiViewUsersListPrev)
+	router.GET("/api/list/:id/delete", ApiDeleteUsers)
+
 }
 
 func UsersAddPost(c *gin.Context) {
@@ -38,13 +46,17 @@ func UsersAddPost(c *gin.Context) {
 	var input UsersPasswordValidation
 
 	if err := c.ShouldBind(&input); err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
 		return
+
 	}
 
 	bytePassword := []byte(input.Password)
 	// Make sure the second param `bcrypt generator cost` between [4, 32)
 	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
+
 	input.Password = string(passwordHash)
 
 	// Create user
@@ -55,7 +67,19 @@ func UsersAddPost(c *gin.Context) {
 	//end Gorm_SQL
 
 	//c.JSON(http.StatusOK, gin.H{"data": user})
-	c.Redirect(http.StatusFound, "/users/list")
+
+	headerContentTtype := c.Request.Header.Get("Content-Type")
+
+	if headerContentTtype != "application/json" {
+
+		c.Redirect(http.StatusFound, "/users/list")
+
+	} else {
+
+		c.IndentedJSON(http.StatusCreated, user)
+
+	}
+
 }
 
 func UpdateUsers(c *gin.Context) {
@@ -65,8 +89,11 @@ func UpdateUsers(c *gin.Context) {
 	var model Model.UserModel
 
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+
 		return
+
 	}
 	//end Gorm_SQL
 
@@ -74,20 +101,44 @@ func UpdateUsers(c *gin.Context) {
 	var input UsersValidation
 
 	if err := c.ShouldBind(&input); err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
 		return
+
 	}
 
-	bytePassword := []byte(input.Password)
-	// Make sure the second param `bcrypt generator cost` between [4, 32)
-	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
-	input.Password = string(passwordHash)
+	if len(input.Password) > 0 {
 
-	//Gorm_SQL
-	config.DB.Model(&model).Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role, Password: input.Password})
-	//end Gorm_SQL
+		bytePassword := []byte(input.Password)
+		// Make sure the second param `bcrypt generator cost` between [4, 32)
+		passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 
-	c.Redirect(http.StatusFound, "/users/list")
+		input.Password = string(passwordHash)
+
+		//Gorm_SQL
+		config.DB.Model(&model).Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role, Password: input.Password})
+		//end Gorm_SQL
+
+	} else {
+
+		//Gorm_SQL
+		config.DB.Model(&model).Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role})
+		//end Gorm_SQL
+
+	}
+
+	headerContentTtype := c.Request.Header.Get("Content-Type")
+
+	if headerContentTtype != "application/json" {
+
+		c.Redirect(http.StatusFound, "/users/list")
+
+	} else {
+
+		c.IndentedJSON(http.StatusOK, model)
+
+	}
 
 }
 
@@ -114,21 +165,57 @@ func ViewUsersList(c *gin.Context) {
 	//Gorm_SQL
 	var model []Model.UserModel
 	//end Gorm_SQL
+
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
+
 	if sessionID == nil {
+
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
 		c.Redirect(http.StatusFound, "/auth/login")
+
 		c.Abort()
+
 	}
+
 	//Gorm_SQL
 	config.DB.Find(&model)
 	//end Gorm_SQL
 
-	c.HTML(http.StatusOK, "users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+	//env
+	env := godotenv.Load()
+
+	if env != nil {
+
+		panic("Error loading .env file")
+
+	}
+	//end_env
+
+	template := os.Getenv("TEMPLATE")
+
+	switch {
+
+	case template == "vue":
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	case template == "html":
+
+		//HTML template
+		c.HTML(http.StatusOK, "users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+
+	default:
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	}
+
 }
 
 func ViewUsersListPrev(c *gin.Context) { // Get model if exist
@@ -138,23 +225,57 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
+
 	if sessionID == nil {
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
+
 		c.Redirect(http.StatusFound, "/auth/login")
+
 		c.Abort()
 	}
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
+
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+
 		return
 	}
 	//end Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": model })
-	c.HTML(http.StatusOK, "users_list_prev.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "id": model.ID, "name": model.Name,
-		"email": model.Email, "role": model.Role})
+	//env
+	env := godotenv.Load()
+
+	if env != nil {
+
+		panic("Error loading .env file")
+
+	}
+	//end_env
+
+	template := os.Getenv("TEMPLATE")
+
+	switch {
+
+	case template == "vue":
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	case template == "html":
+
+		//HTML template
+		c.HTML(http.StatusOK, "users_list_prev.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "id": model.ID, "name": model.Name,
+			"email": model.Email, "role": model.Role})
+
+	default:
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	}
+
 }
 
 func ViewAddUsers(c *gin.Context) { // Get model if exist
@@ -162,14 +283,146 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
+
 	if sessionID == nil {
 		//c.JSON(http.StatusForbidden, gin.H{
 		//	"message": "not authed",
 		//})
 		c.Redirect(http.StatusFound, "/auth/login")
+
 		c.Abort()
+
+	}
+
+	//env
+	env := godotenv.Load()
+
+	if env != nil {
+
+		panic("Error loading .env file")
+
+	}
+	//end_env
+
+	template := os.Getenv("TEMPLATE")
+
+	switch {
+
+	case template == "vue":
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	case template == "html":
+
+		//HTML template
+		c.HTML(http.StatusOK, "users_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+
+	default:
+
+		//VUE template
+		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+
+	}
+
+}
+
+func ApiViewUsersList(c *gin.Context) {
+
+	//Gorm_SQL
+	var model []Model.UserModel
+	//end Gorm_SQL
+
+	session := sessions.Default(c)
+	sessionID := session.Get("user_id")
+	sessionName := session.Get("user_name")
+
+	if sessionID == nil {
+		//c.JSON(http.StatusForbidden, gin.H{
+		//	"message": "not authed",
+		//})
+
+		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+
+		c.Abort()
+
+	}
+
+	//Gorm_SQL
+	config.DB.Find(&model)
+	//end Gorm_SQL
+
+	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+
+}
+
+func ApiViewAddUsers(c *gin.Context) { // Get model if exist
+
+	session := sessions.Default(c)
+	sessionID := session.Get("user_id")
+	sessionName := session.Get("user_name")
+
+	if sessionID == nil {
+		//c.JSON(http.StatusForbidden, gin.H{
+		//	"message": "not authed",
+		//})
+
+		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+
+		c.Abort()
+
 	}
 
 	//c.JSON(http.StatusOK, gin.H{"data": model})
-	c.HTML(http.StatusOK, "users_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+
+}
+
+func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
+
+	var model Model.UserModel
+
+	session := sessions.Default(c)
+	sessionID := session.Get("user_id")
+	sessionName := session.Get("user_name")
+
+	if sessionID == nil {
+		//c.JSON(http.StatusForbidden, gin.H{
+		//	"message": "not authed",
+		//})
+
+		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+
+		c.Abort()
+	}
+	//Gorm_SQL
+	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
+
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+
+		return
+	}
+	//end Gorm_SQL
+
+	//c.JSON(http.StatusOK, gin.H{"data": model })
+	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "id": model.ID, "name": model.Name,
+		"email": model.Email, "role": model.Role})
+
+}
+
+func ApiDeleteUsers(c *gin.Context) {
+	// Get model if exist
+
+	//Gorm_SQL
+	var model Model.UserModel
+
+	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	config.DB.Delete(&model)
+	//end Gorm_SQL
+
+	c.IndentedJSON(http.StatusOK, gin.H{"data": true})
 }

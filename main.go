@@ -90,7 +90,8 @@ func main() {
 
 	//gin_route_middleware
 
-	r.GET("/", Controllers.GetWelcome)
+	welcome := r.Group("/")
+	Controllers.Welcome(welcome.Group("/"))
 
 	auth := r.Group("/auth")
 	Controllers.Auth(auth.Group("/"))
@@ -131,4 +132,3 @@ func main() {
 	PORT := os.Getenv("PORT")
 	r.Run(PORT) // listen and serve on 0.0.0.0:8080
 }
-

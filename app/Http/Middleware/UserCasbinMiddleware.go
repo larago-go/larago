@@ -29,9 +29,9 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 		res, err := e.Enforce(sub, obj, act)
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
+			c.IndentedJSON(http.StatusInternalServerError, gin.H{
 				"status": -1,
-				"msg":    "wrong information" + err.Error(),
+				"error":  "wrong information" + err.Error(),
 			})
 			c.Abort()
 			return
@@ -39,9 +39,9 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 		if res {
 			c.Next()
 		} else {
-			c.JSON(http.StatusOK, gin.H{
+			c.IndentedJSON(http.StatusOK, gin.H{
 				"status": 0,
-				"msg":    "Sorry you do not have this permission",
+				"error":  "Sorry you do not have this permission",
 			})
 			c.Abort()
 			return
@@ -49,4 +49,3 @@ func AuthCasbinMiddleware(bool) gin.HandlerFunc {
 
 	}
 }
-
