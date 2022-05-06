@@ -20,12 +20,6 @@ type UsersValidation struct {
 	Password string `form:"password" json:"password"`
 }
 
-type UsersPasswordValidation struct {
-	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
-}
-
 func UsersRegister(router *gin.RouterGroup) {
 
 	router.POST("/post_add", UsersAddPost)
@@ -43,7 +37,7 @@ func UsersRegister(router *gin.RouterGroup) {
 
 func UsersAddPost(c *gin.Context) {
 	// Validate input
-	var input UsersPasswordValidation
+	var input UsersValidation
 
 	if err := c.ShouldBind(&input); err != nil {
 
@@ -60,7 +54,7 @@ func UsersAddPost(c *gin.Context) {
 	input.Password = string(passwordHash)
 
 	// Create user
-	user := Model.UserModel{Name: input.Name, Email: input.Email, Password: input.Password}
+	user := Model.UserModel{Name: input.Name, Role: input.Role, Email: input.Email, Password: input.Password}
 
 	//Gorm_SQL
 	config.DB.Save(&user)

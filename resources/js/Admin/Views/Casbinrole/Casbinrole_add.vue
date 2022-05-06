@@ -134,6 +134,8 @@ async created() {
        
       async submit() {
 
+      try {
+
         Connect.defaults.headers.post['X-CSRF-Token'] = this.csrf;
        
          await Connect.post("/role/post_add", this.form)
@@ -148,7 +150,13 @@ async created() {
          
          this.$router.push({ name: 'role_list' });
        
-       },
+         } catch (error) {
+      
+          this.error = error;
+    
+        }
+
+      },
     }
 }
 </script>

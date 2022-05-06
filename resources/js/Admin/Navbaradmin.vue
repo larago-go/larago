@@ -33,7 +33,7 @@
 
             <!-- dropdown menu -->
             <div class="absolute bg-gray-100 border border-t-0 shadow-xl text-gray-700 rounded-b-lg w-48 right-0 mr-6" :class="dropDownOpen ? '' : 'hidden'">
-<router-link :to="'/'" class="block px-4 py-2 hover:bg-gray-200" aria-current="page">Website</router-link>
+                <button class="block px-4 py-2 hover:bg-gray-200" @click="in_website()" aria-current="page">Website</button>
                 <button class="block px-4 py-2 hover:bg-gray-200" @click="session_out()">Logout</button>
             </div>
             <!-- dropdown menu end -->
@@ -65,11 +65,18 @@ export default {
 
   methods: {
 
+    async in_website() {
+          
+          window.location.href = '/';
+      
+    },
+
     async session_out() {
           
           await Connect.get("/auth/api/signout");
           window.location.href = '/';
-      },
+      
+    },
 
       toggleSidebar() {
 

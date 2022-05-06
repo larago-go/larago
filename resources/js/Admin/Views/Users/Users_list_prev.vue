@@ -98,6 +98,7 @@ export default {
               }
         }
     },
+
 async created() { 
 
   try {
@@ -127,6 +128,7 @@ async created() {
                 this.form.role = response.data.role;
                     
               }
+
              }  
             
       })  
@@ -141,6 +143,8 @@ async created() {
     methods: {
        
       async submit() {
+
+      try {
 
         Connect.defaults.headers.post['X-CSRF-Token'] = this.csrf;
        
@@ -157,6 +161,12 @@ async created() {
          
          this.$router.push({ name: 'users_list' });
        
+         } catch (error) {
+      
+          this.error = error;
+    
+        }
+
        },
     }
 }
