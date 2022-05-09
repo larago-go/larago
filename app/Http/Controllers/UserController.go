@@ -111,13 +111,13 @@ func UpdateUsers(c *gin.Context) {
 		input.Password = string(passwordHash)
 
 		//Gorm_SQL
-		config.DB.Model(&model).Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role, Password: input.Password})
+		config.DB.Model(&model).Select("name", "email", "role", "password").Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role, Password: input.Password})
 		//end Gorm_SQL
 
 	} else {
 
 		//Gorm_SQL
-		config.DB.Model(&model).Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role})
+		config.DB.Model(&model).Select("name", "email", "role", "password").Updates(Model.UserModel{Name: input.Name, Email: input.Email, Role: input.Role})
 		//end Gorm_SQL
 
 	}
