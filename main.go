@@ -44,10 +44,10 @@ func main() {
 	//gin.SetMode(gin.ReleaseMode)
 
 	r := gin.Default()
-	
-        //Trusted_proxies
-        //r.SetTrustedProxies([]string{"192.168.1.2"})
-        //end_Trusted_proxies
+
+	//Trusted_proxies
+	//r.SetTrustedProxies([]string{"192.168.1.2"})
+	//end_Trusted_proxies
 
 	//sessions
 
