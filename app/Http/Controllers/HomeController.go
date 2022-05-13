@@ -53,7 +53,7 @@ func ViewHome(c *gin.Context) {
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "home.html", gin.H{"session_id": sessionID, "session_name": sessionName})
+		c.HTML(http.StatusOK, "admin_views_home.html", gin.H{"session_id": sessionID, "session_name": sessionName})
 	default:
 
 		//VUE template

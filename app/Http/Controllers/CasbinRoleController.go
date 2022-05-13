@@ -103,7 +103,7 @@ func ViewCasbinRole(c *gin.Context) {
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
+		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
 
 	default:
 
@@ -149,7 +149,7 @@ func AddCasbinRole(c *gin.Context) {
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "casbin_role_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+		c.HTML(http.StatusOK, "admin_views_casbin_role_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
 
 	default:
 

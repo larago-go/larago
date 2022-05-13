@@ -201,7 +201,7 @@ func ViewUsersList(c *gin.Context) {
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+		c.HTML(http.StatusOK, "admin_views_users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
 
 	default:
 
@@ -260,7 +260,7 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "users_list_prev.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "id": model.ID, "name": model.Name,
+		c.HTML(http.StatusOK, "admin_views_users_list_prev.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "id": model.ID, "name": model.Name,
 			"email": model.Email, "role": model.Role})
 
 	default:
@@ -310,7 +310,7 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "users_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+		c.HTML(http.StatusOK, "admin_views_users_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
 
 	default:
 

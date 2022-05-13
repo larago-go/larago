@@ -196,7 +196,7 @@ func ViewUsersLogin(c *gin.Context) {
 		case template == "html":
 
 			//HTML template
-			c.HTML(http.StatusOK, "login.html", gin.H{"csrf": csrf.GetToken(c)})
+			c.HTML(http.StatusOK, "admin_auth_login.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		default:
 
@@ -250,7 +250,7 @@ func ViewUsersRegistration(c *gin.Context) {
 		case template == "html":
 
 			//HTML template
-			c.HTML(http.StatusOK, "register.html", gin.H{"csrf": csrf.GetToken(c)})
+			c.HTML(http.StatusOK, "admin_auth_register.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		default:
 

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -38,8 +39,12 @@ func GetWelcome(c *gin.Context) {
 
 	case template == "html":
 
+		session := sessions.Default(c)
+
+		sessionID := session.Get("user_id")
+
 		//HTML template
-		c.HTML(http.StatusOK, "welcome.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "public_welcome.html", gin.H{"title": "Larago", "session_id": sessionID})
 
 	default:
 

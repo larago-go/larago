@@ -140,7 +140,7 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "forgot_password_new.html", gin.H{"csrf": csrf.GetToken(c), "url": model.Url})
+		c.HTML(http.StatusOK, "admin_auth_forgot_password_new.html", gin.H{"csrf": csrf.GetToken(c), "url": model.Url})
 
 	default:
 
@@ -219,7 +219,7 @@ func ViewForgotPassword(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "forgot_password.html", gin.H{"csrf": csrf.GetToken(c)})
+		c.HTML(http.StatusOK, "admin_auth_forgot_password.html", gin.H{"csrf": csrf.GetToken(c)})
 
 	default:
 
