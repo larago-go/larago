@@ -14,14 +14,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Res_passValidation struct {
-	Email string `form:"email" json:"email" binding:"required,email"`
-}
-
-type Res_passPasswordValidation struct {
-	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
-}
-
 func Res_pass(router *gin.RouterGroup) {
 	router.POST("/post_add", PostForgotPassword)
 	router.GET("/forgot_password", ViewForgotPassword)
@@ -29,6 +21,14 @@ func Res_pass(router *gin.RouterGroup) {
 	router.GET("/pass/:url", ViewRes_passListPrev)
 	router.GET("/api/pass/:url", ApiViewRes_passListPrev)
 	router.GET("/api/forgot_password", ApiViewForgotPassword)
+}
+
+type Res_passValidation struct {
+	Email string `form:"email" json:"email" binding:"required,email"`
+}
+
+type Res_passPasswordValidation struct {
+	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
 }
 
 func PostForgotPassword(c *gin.Context) {

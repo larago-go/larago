@@ -13,13 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UsersValidation struct {
-	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Role     string `form:"role" json:"role"`
-	Password string `form:"password" json:"password"`
-}
-
 func UsersRegister(router *gin.RouterGroup) {
 
 	router.POST("/post_add", UsersAddPost)
@@ -33,6 +26,13 @@ func UsersRegister(router *gin.RouterGroup) {
 	router.GET("/api/list/:id", ApiViewUsersListPrev)
 	router.GET("/api/list/:id/delete", ApiDeleteUsers)
 
+}
+
+type UsersValidation struct {
+	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
+	Email    string `form:"email" json:"email" binding:"required,email"`
+	Role     string `form:"role" json:"role"`
+	Password string `form:"password" json:"password"`
 }
 
 func UsersAddPost(c *gin.Context) {

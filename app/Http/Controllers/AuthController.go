@@ -13,17 +13,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type PasswordValidation struct {
-	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
-}
-
-type LoginValidation struct {
-	Email    string `form:"email" json:"email" binding:"required,email"`
-	Password string `form:"password"json:"password" binding:"required,min=8,max=255"`
-}
-
 func Auth(router *gin.RouterGroup) {
 
 	router.POST("/signup", UsersRegistration)
@@ -35,6 +24,17 @@ func Auth(router *gin.RouterGroup) {
 	router.GET("/api/login", ApiViewUsersLogin)
 	router.GET("/api/session", ViewUserSession)
 	router.GET("/api/signout", ApiLoginout)
+}
+
+type PasswordValidation struct {
+	Name     string `form:"name" json:"name" binding:"required,alphanum,min=4,max=255"`
+	Email    string `form:"email" json:"email" binding:"required,email"`
+	Password string `form:"password" json:"password" binding:"required,min=8,max=255"`
+}
+
+type LoginValidation struct {
+	Email    string `form:"email" json:"email" binding:"required,email"`
+	Password string `form:"password"json:"password" binding:"required,min=8,max=255"`
 }
 
 func UsersRegistration(c *gin.Context) {

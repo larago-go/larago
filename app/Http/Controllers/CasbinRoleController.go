@@ -12,12 +12,6 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 )
 
-type CasbinRoleAddValidation struct {
-	RoleName string `form:"rolename" json:"rolename" binding:"required"`
-	Path     string `form:"path" json:"path" binding:"required"`
-	Method   string `form:"method" json:"method" binding:"required"`
-}
-
 func CasbinRole(router *gin.RouterGroup) {
 
 	router.POST("/post_add", AddPostCasbinRole)
@@ -28,6 +22,12 @@ func CasbinRole(router *gin.RouterGroup) {
 	router.GET("/api/list", ApiViewCasbinRole)
 	router.GET("/api/list/:id/delete", ApiDeleteCasbinRole)
 
+}
+
+type CasbinRoleAddValidation struct {
+	RoleName string `form:"rolename" json:"rolename" binding:"required"`
+	Path     string `form:"path" json:"path" binding:"required"`
+	Method   string `form:"method" json:"method" binding:"required"`
 }
 
 func AddPostCasbinRole(c *gin.Context) {
