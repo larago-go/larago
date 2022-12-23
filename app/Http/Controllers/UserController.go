@@ -156,10 +156,6 @@ func DeleteUsers(c *gin.Context) {
 
 func ViewUsersList(c *gin.Context) {
 
-	//Gorm_SQL
-	var model []Model.UserModel
-	//end Gorm_SQL
-
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
@@ -174,10 +170,6 @@ func ViewUsersList(c *gin.Context) {
 		c.Abort()
 
 	}
-
-	//Gorm_SQL
-	config.DB.Find(&model)
-	//end Gorm_SQL
 
 	//env
 	env := godotenv.Load()
@@ -199,6 +191,12 @@ func ViewUsersList(c *gin.Context) {
 		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
 
 	case template == "html":
+
+		//Gorm_SQL
+		var model []Model.UserModel
+
+		config.DB.Find(&model)
+		//end Gorm_SQL
 
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
