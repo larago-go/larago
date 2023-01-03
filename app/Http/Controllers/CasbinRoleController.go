@@ -64,9 +64,6 @@ func AddPostCasbinRole(c *gin.Context) {
 
 func ViewCasbinRole(c *gin.Context) {
 
-	//Gorm_SQL
-	var model []Model.CasbinRoleModel
-	//end_Gorm_SQL
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
@@ -77,9 +74,6 @@ func ViewCasbinRole(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
-	//Gorm_SQL
-	config.DB.Find(&model)
-	//end_Gorm_SQL
 
 	//env
 	env := godotenv.Load()
@@ -101,6 +95,12 @@ func ViewCasbinRole(c *gin.Context) {
 		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
 
 	case template == "html":
+
+		//Gorm_SQL
+		var model []Model.CasbinRoleModel
+
+		config.DB.Find(&model)
+		//end_Gorm_SQL
 
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
