@@ -37,7 +37,6 @@
 * [Specification](#specification)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
-* [CRUD(creating a model, controller, views)](#CRUD)
 * [License](#license)
 * [Contact](#contact)
 
@@ -109,25 +108,6 @@ go run main.go
 http://localhost:8080/
 ```
 enjoy!
-
-
-
-<!-- CRUD(creating a model, controller, views) -->
-## CRUD
-CRUD(creating a model, controller, views) | 
-View and edit the file crud.bash
-```sh
-set up variables
-model=ExampleModel
-model_l=examplemodel
-model_url=example
-controller=ExampleController
-fields=('Title  string `gorm:"column:title"`' 'Text  string `gorm:"column:text"`' 'Author  string `gorm:"column:author"`')
-```
-```sh
-run
-sh crud.bash
-```
 
 <!-- LICENSE -->
 ## License
