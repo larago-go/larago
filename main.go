@@ -90,7 +90,9 @@ func main() {
 	r.Static("/assets", "./dist/assets")
 	r.Static("/public", "./public")
 	r.Static("/node_modules", "./node_modules")
-	r.LoadHTMLGlob("resources/views/*.html")
+
+	//switch vue | html template"
+	//r.LoadHTMLGlob("resources/views/*.html")
 	r.LoadHTMLGlob("dist/*.html")
 	//end_gin_html_and_static
 
