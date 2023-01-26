@@ -1,3 +1,29 @@
+<script setup>
+
+import { ref } from 'vue';
+
+import { useStore } from 'vuex';
+
+import Connect from '../confconnect';
+
+const dropDownOpen = ref(false);
+
+const store = useStore();
+
+const InWebsite = () => {
+  window.location.href = '/';
+};
+
+const SessionOut = () => {
+  Connect.get('/auth/api/signout');
+  window.location.href = '/';
+};
+
+function toggleSidebar() {
+  store.dispatch('toggleSidebar');
+}
+
+</script>
 <template>
     <div class="sticky top-0 z-40">
             <div class="w-full h-20 px-6 bg-gray-100 border-b flex items-center justify-between">
@@ -33,62 +59,13 @@
 
             <!-- dropdown menu -->
             <div class="absolute bg-gray-100 border border-t-0 shadow-xl text-gray-700 rounded-b-lg w-48 right-0 mr-6" :class="dropDownOpen ? '' : 'hidden'">
-                <button class="block px-4 py-2 hover:bg-gray-200" @click="in_website()" aria-current="page">Website</button>
-                <button class="block px-4 py-2 hover:bg-gray-200" @click="session_out()">Logout</button>
+                <button class="block px-4 py-2 hover:bg-gray-200" @click="InWebsite()" aria-current="page">Website</button>
+                <button class="block px-4 py-2 hover:bg-gray-200" @click="SessionOut()">Logout</button>
             </div>
             <!-- dropdown menu end -->
 
     </div>
 </template>
-
-<script>
-
-import { mapState } from 'vuex'
-import Connect from '@/config_conn'
-
-export default {
-
-  computed: {
-
-      ...mapState(['sideBarOpen'])
-
-    },
-
-  data() {
-
-      return {
-        
-          dropDownOpen: false
-
-        }
-    },
-
-  methods: {
-
-    async in_website() {
-          
-          window.location.href = '/';
-      
-    },
-
-    async session_out() {
-          
-          await Connect.get("/auth/api/signout");
-          window.location.href = '/';
-      
-    },
-
-      toggleSidebar() {
-
-          this.$store.dispatch('toggleSidebar')
-
-        }
-
-    }
-
-}
-
-</script>
 
 <style>
 

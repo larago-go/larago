@@ -1,3 +1,56 @@
+<script setup>
+import { ref } from 'vue';
+
+import { useRouter } from 'vue-router';
+
+import SidebarAdmin from '../../SidebarAdmin.vue';
+
+import NavbarAdmin from '../../NavbarAdmin.vue';
+
+import FooterAdmin from '../FooterAdmin.vue';
+
+import Connect from '../../../confconnect';
+
+const router = useRouter();
+
+const datavw = ref({
+
+  lists: [],
+  session_id: '',
+  session_name: '',
+  error: '',
+
+});
+
+const created = () => {
+  try {
+    Connect.get('/role/api/list')
+      .then((response) => {
+        if (response.data.error != null) {
+          datavw.value.error = response.data.error;
+        } else if (response.data.csrf === 'redirect_auth_login') {
+          router.push({ name: 'login' });
+        } else {
+          datavw.value.csrf = response.data.csrf;
+          datavw.value.session_id = response.data.session_id;
+          datavw.value.session_name = response.data.session_name;
+          datavw.value.lists = response.data.list;
+        }
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+created();
+
+const deleteId = (id) => {
+  Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
+  Connect.get("/role/api/list/" + id + "/delete");
+  window.location.href = '/role/list';
+};
+
+</script>
 <template>
   <div class="leading-normal tracking-normal" id="main-body">
     <div class="flex flex-wrap">
@@ -12,10 +65,10 @@
           <div class="py-12">    
 
             <!-- alert  -->
-            <div v-if="error" class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+            <div v-if="datavw.error" class="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
                <svg class="inline flex-shrink-0 mr-3 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
                <div>
-                 <span class="font-medium" >{{ error }}</span>
+                 <span class="font-medium" >{{ datavw.error }}</span>
                </div>
             </div>
 
@@ -38,7 +91,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="list in lists" :key="list" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr v-for="list in datavw.lists" :key="list" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                       {{ list.RoleName }}
                     </th> 
@@ -59,93 +112,13 @@
       </div>
     </div>
         
-    <Footer />
+    <FooterAdmin />
 
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { mapState }  from 'vuex'
-import SidebarAdmin from '@/Admin/Sidebaradmin.vue'
-import NavbarAdmin from '@/Admin/Navbaradmin.vue'
-import Footer from '@/Admin/Views/Footer.vue'
-import Connect from '@/config_conn'
-
-export default {
-  computed: {
-    ...mapState(['sideBarOpen'])
-  },
-  components: {
-    SidebarAdmin,
-    NavbarAdmin,
-    Footer
-  },
-
-    data() {
-        return {
-
-            lists: null,
-            session_id: '',
-            session_name: '',
-            error: '',
-        }
-    },
-
-async created() { 
-
-  try {
-  
-    await Connect.get("/role/api/list")
-            
-      .then(response => { 
-                // JSON responses are automatically parsed.
-             if(response.data.error){
-
-                this.error = response.data.error;
-             
-             } else {
-
-              if(response.data.csrf == "redirect_auth_login"){  
-                
-                this.$router.push({ name: 'login' }); 
-                  
-              } else {
-                    
-                this.csrf = response.data.csrf;
-                this.session_id = response.data.session_id;
-                this.session_name = response.data.session_name;
-                this.lists = response.data.list;
-                    
-              }
-
-             }  
-            
-      })
-
-  } catch (error) {
-      
-    console.log(error);
-    
-  }
-    
-},
-
-  methods: {
-
-    async deleteId(id) {
-          
-          Connect.defaults.headers.post['X-CSRF-Token'] = this.csrf;
-          await Connect.get("/role/api/list/" + id + "/delete");
-          window.location.href = '/role/list';
-      },
-    
-  }
-
-
-}
-</script>
 <style>
 .checkbox:checked + .check-icon {
     display: flex;

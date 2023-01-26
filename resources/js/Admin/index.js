@@ -1,23 +1,22 @@
-import Vuex from 'vuex'
-
+import Vuex from 'vuex';
 
 export default new Vuex.Store({
-    state: {
-        sideBarOpen: false
+  state: {
+    sideBarOpen: false,
+  },
+  getters: {
+    sideBarOpen: state => {
+      return state.sideBarOpen;
     },
-    getters: {
-        sideBarOpen: state => {
-            return state.sideBarOpen
-        }
+  },
+  mutations: {
+    toggleSidebar (state) {
+      state.sideBarOpen = !state.sideBarOpen;
     },
-    mutations: {
-        toggleSidebar (state) {
-            state.sideBarOpen = !state.sideBarOpen
-        }
+  },
+  actions: {
+    toggleSidebar(context) {
+      context.commit('toggleSidebar');
     },
-    actions: {
-        toggleSidebar(context) {
-            context.commit('toggleSidebar')
-        }
-    }
-})
+  },
+});

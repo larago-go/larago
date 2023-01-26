@@ -5,7 +5,6 @@
 
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-            
             <img class="block  h-16 w-auto" src="https://github.com/larago-go/larago/raw/master/larago-logo_git.png" alt="Workflow" /> 
             <h3>LARAGO</h3>
 
@@ -25,12 +24,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -98,15 +93,3 @@
         }
     }
 </style>
-
-<script>
-
-export default {
-    props: {
-        canLogin: Boolean,
-        canRegister: Boolean,
-        laravelVersion: String,
-        phpVersion: String,
-    },
-}
-</script>

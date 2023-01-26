@@ -35,7 +35,7 @@ func GetWelcome(c *gin.Context) {
 	case template == "vue":
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	case template == "html":
 
@@ -49,7 +49,7 @@ func GetWelcome(c *gin.Context) {
 	default:
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	}
 

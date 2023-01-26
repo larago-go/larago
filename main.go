@@ -87,9 +87,11 @@ func main() {
 	//end_CSRF_Middleware
 
 	//gin_html_and_static
+	r.Static("/assets", "./dist/assets")
 	r.Static("/public", "./public")
 	r.Static("/node_modules", "./node_modules")
 	r.LoadHTMLGlob("resources/views/*.html")
+	r.LoadHTMLGlob("dist/*.html")
 	//end_gin_html_and_static
 
 	//gin_route_middleware

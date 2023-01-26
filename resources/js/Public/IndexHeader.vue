@@ -1,4 +1,48 @@
+<script setup>
 
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from '@headlessui/vue';
+
+import { ref } from 'vue';
+
+import { MenuIcon, XIcon } from '@heroicons/vue/outline';
+
+import Connect from '../confconnect';
+
+const session = ref({
+  userid_session: '',
+  userid_session_id: '',
+  status_auth_no: 'no_auth',
+  status_auth_yes: 'auth',
+});
+
+const created = () => {
+  try {
+    Connect.get('/auth/api/session')
+      .then((response) => {
+        // JSON responses are automatically parsed.
+        session.value.userid_session = response.data.userid_session;
+        session.value.userid_session_id = response.data.userid_session_id;
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+created();
+
+const SessionOut = () => {
+  Connect.get('/auth/api/signout');
+  window.location.href = '/';
+};
+</script>
 <template>
   <Disclosure as="nav" class="publicnav bg-gray-800" v-slot="{ open }">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -24,7 +68,7 @@
             </div>
           </div>
         </div>
-        <div v-if="userid_session == status_auth_yes" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <div v-if="session.userid_session === session.status_auth_yes" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!--  <button type="button" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
             <span class="sr-only">View notifications</span>
             <BellIcon class="h-6 w-6" aria-hidden="true" />
@@ -44,7 +88,7 @@
                   <router-link :to="'/home'" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Admin</router-link>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                  <button @click="session_out()"  :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</button>
+                  <button @click="SessionOut()"  :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</button>
                 </MenuItem>
               </MenuItems>
             </transition>
@@ -63,59 +107,3 @@
   </Disclosure>
 <router-view></router-view>
 </template>
-
-<script>
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { MenuIcon, XIcon } from '@heroicons/vue/outline'
-
-import Connect from '@/config_conn'
-
-export default {
-  components: {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    MenuIcon,
-    XIcon,
-  },
-
-    data() {
-        return {
-
-            userid_session: '',
-            userid_session_id: '',
-            status_auth_no: "no_auth",
-            status_auth_yes: "auth",
-        }
-    },
- async created() { 
-try {
-  await Connect.get("/auth/api/session")
-            .then(response => { 
-                // JSON responses are automatically parsed.
-                    this.userid_session = response.data.userid_session;
-                    this.userid_session_id = response.data.userid_session_id;
-            })  
-    } catch (error) {
-      console.log(error);
-    }
-    },
-
-  methods: {
-
-    async session_out() {
-          
-          await Connect.get("/auth/api/signout");
-          window.location.href = '/';
-      },
-  }
-}
-</script>
-
-
-
-

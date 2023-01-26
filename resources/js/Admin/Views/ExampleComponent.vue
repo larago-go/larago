@@ -1,3 +1,12 @@
+<script setup>
+
+import SidebarAdmin from '../SidebarAdmin.vue';
+
+import NavbarAdmin from '../NavbarAdmin.vue';
+
+import FooterAdmin from './FooterAdmin.vue';
+
+</script>
 <template>
   <div class="leading-normal tracking-normal" id="main-body">
     <div class="flex flex-wrap">
@@ -16,26 +25,10 @@
                     </div>
         </div>
 
-        <Footer />
+        <FooterAdmin />
 
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { mapState }  from 'vuex'
-import SidebarAdmin from '@/Admin/Sidebaradmin.vue'
-import NavbarAdmin from '@/Admin/Navbaradmin.vue'
-import Footer from '@/Admin/Views/Footer.vue'
-export default {
-  computed: {
-    ...mapState(['sideBarOpen'])
-  },
-  components: {
-    SidebarAdmin,
-    NavbarAdmin,
-    Footer
-  }
-}
-</script>

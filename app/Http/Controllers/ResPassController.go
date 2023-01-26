@@ -135,7 +135,7 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 	case template == "vue":
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	case template == "html":
 
@@ -145,7 +145,7 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 	default:
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	}
 
@@ -214,7 +214,7 @@ func ViewForgotPassword(c *gin.Context) { // Get model if exist
 	case template == "vue":
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	case template == "html":
 
@@ -224,7 +224,7 @@ func ViewForgotPassword(c *gin.Context) { // Get model if exist
 	default:
 
 		//VUE template
-		c.HTML(http.StatusOK, "index_vue.html", gin.H{"title": "Larago"})
+		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
 
 	}
 
