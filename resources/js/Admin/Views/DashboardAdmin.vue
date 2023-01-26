@@ -36,8 +36,6 @@ const created = () => {
 
 created();
 
-// computed();
-
 </script>
 <template>
   <div class="leading-normal tracking-normal" id="main-body">
