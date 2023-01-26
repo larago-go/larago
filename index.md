@@ -1,13 +1,10 @@
 
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
 
   <a href="https://github.com/larago-go/larago">
-    <img src="golang-larago.png" alt="Logo" width="100" height="100">
+    <img src="larago-logo_git.png" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">LARAGO</h3>
@@ -18,8 +15,6 @@
     <a href="https://github.com/larago-go/larago"><strong>Useful links and documents »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/larago-go">Larago</a>
-    ·
     <a href="https://github.com/gin-gonic/gin">Gin framework</a>
     ·
     <a href="https://gorm.io/docs/">ORM GORM</a>
@@ -39,11 +34,13 @@
 * [Specification](#specification)
 * [Getting Started](#getting-started)
   * [Installation](#installation)
-* [CRUD(creating a model, controller, views)](#CRUD)
 * [License](#license)
 * [Contact](#contact)
 
 
+<!-- Architecture -->
+## Architecture
+![Architecture][product-arch]
 
 <!-- ABOUT THE PROJECT -->
 ## About The Larago
@@ -68,7 +65,7 @@ Under the hood:
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
+you need Golang 1.19,
 To get a local copy up and running follow these simple steps.
 
 
@@ -86,7 +83,7 @@ npm install
 ```
 and
 ```sh
-npm run dev
+npm run build
 ```
 3. Rename the file .env.example
 ```sh
@@ -99,6 +96,7 @@ mv .env.example .env
 
 6. inside your project run the command
 ```sh
+go mod tidy | if necessary
 go run main.go
 ```
 
@@ -107,25 +105,6 @@ go run main.go
 http://localhost:8080/
 ```
 enjoy!
-
-
-
-<!-- CRUD(creating a model, controller, views) -->
-## CRUD
-CRUD(creating a model, controller, views) | 
-View and edit the file crud.bash
-```sh
-set up variables
-model=ExampleModel
-model_l=examplemodel
-model_url=example
-controller=ExampleController
-fields=('Title  string `gorm:"column:title"`' 'Text  string `gorm:"column:text"`' 'Author  string `gorm:"column:author"`')
-```
-```sh
-run
-sh crud.bash
-```
 
 <!-- LICENSE -->
 ## License
@@ -144,3 +123,4 @@ Author Link: [https://github.com/GuzhavinAleksey](https://github.com/GuzhavinAle
 <!-- IMAGES -->
 
 [product-screenshot]: larago_git.png
+[product-arch]: larago-ach.jpg
