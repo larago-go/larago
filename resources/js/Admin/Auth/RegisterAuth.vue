@@ -48,8 +48,8 @@ const submit = () => {
         response.name = '';
         response.email = '';
         response.password = '';
+        router.push({ name: 'login' });
       });
-    router.push({ name: 'login' });
   } catch (error) {
     datavw.value.error = error;
   }

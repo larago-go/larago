@@ -57,8 +57,8 @@ const submit = () => {
         response.rolename = '';
         response.path = '';
         response.method = '';
+        router.push({ name: 'role_list' });
       });
-    router.push({ name: 'role_list' });
   } catch (error) {
     datavw.value.error = error;
   }

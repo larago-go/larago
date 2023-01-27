@@ -47,8 +47,8 @@ const submit = () => {
     Connect.post("/login/pass/" + route.params.url + "/post", datavw.value.form)
       .then((response) => {
         response.password = '';
+        router.push({ name: 'login' });
       });
-    router.push({ name: 'login' });
   } catch (error) {
     datavw.value.error = error;
   }

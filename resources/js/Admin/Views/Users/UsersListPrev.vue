@@ -66,8 +66,8 @@ const submit = () => {
         response.email = '';
         response.role = '';
         response.password = '';
+        router.push({ name: 'users_list' });
       });
-    router.push({ name: 'users_list' });
   } catch (error) {
     datavw.value.error = error;
   }
