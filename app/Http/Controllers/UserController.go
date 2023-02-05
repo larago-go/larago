@@ -17,6 +17,7 @@ func UsersRegister(router *gin.RouterGroup) {
 
 	router.POST("/post_add", UsersAddPost)
 	router.POST("/list/:id/edit", UpdateUsers)
+	router.PUT("/api/list/:id/edit", UpdateUsers)
 	router.GET("/list/:id/delete", DeleteUsers)
 	router.GET("/add", ViewAddUsers)
 	router.GET("/list", ViewUsersList)
@@ -24,7 +25,7 @@ func UsersRegister(router *gin.RouterGroup) {
 	router.GET("/api/list", ApiViewUsersList)
 	router.GET("/api/add", ApiViewAddUsers)
 	router.GET("/api/list/:id", ApiViewUsersListPrev)
-	router.GET("/api/list/:id/delete", ApiDeleteUsers)
+	router.DELETE("/api/list/:id/delete", ApiDeleteUsers)
 
 }
 

@@ -45,8 +45,8 @@ const created = () => {
 created();
 
 const deleteId = (id) => {
-  Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
-  Connect.get("/role/api/list/" + id + "/delete");
+  Connect.defaults.headers.delete['X-CSRF-Token'] = datavw.value.csrf;
+  Connect.delete("/role/api/list/" + id + "/delete");
   window.location.href = '/role/list';
 };
 

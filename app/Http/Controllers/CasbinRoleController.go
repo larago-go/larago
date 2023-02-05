@@ -20,7 +20,7 @@ func CasbinRole(router *gin.RouterGroup) {
 	router.GET("/add", AddCasbinRole)
 	router.GET("/api/add", ApiAddCasbinRole)
 	router.GET("/api/list", ApiViewCasbinRole)
-	router.GET("/api/list/:id/delete", ApiDeleteCasbinRole)
+	router.DELETE("/api/list/:id/delete", ApiDeleteCasbinRole)
 
 }
 
