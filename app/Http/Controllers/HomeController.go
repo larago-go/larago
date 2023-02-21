@@ -1,11 +1,10 @@
 package Controllers
 
 import (
-	"os"
+	"larago/config"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 
 	"net/http"
@@ -31,17 +30,7 @@ func ViewHome(c *gin.Context) {
 		c.Abort()
 	}
 
-	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 

@@ -2,7 +2,10 @@ package config
 
 import (
 	"math/rand"
+	"os"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func RandomString(n int) string {
@@ -16,4 +19,16 @@ func RandomString(n int) string {
 		b[i] = letter[rand.Intn(len(letter))]
 	}
 	return string(b)
+}
+
+func EnvFunc(env string) string {
+
+	errenv := godotenv.Load()
+	if errenv != nil {
+		panic("Error loading .env file")
+	}
+
+	env = os.Getenv(env)
+
+	return string(env)
 }

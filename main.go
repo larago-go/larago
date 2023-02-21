@@ -4,11 +4,9 @@ import (
 	"larago/app/Http/Controllers"
 	"larago/app/Http/Middleware"
 	"larago/config"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 
 	///sessions_redis
@@ -29,14 +27,7 @@ func main() {
 	config.Init()
 	//end_database_SQL
 
-	//env
-	errenv := godotenv.Load()
-	if errenv != nil {
-		panic("Error loading .env file")
-	}
-	//end_env
-
-	APP_KEYS := os.Getenv("APP_KEYS")
+	APP_KEYS := config.EnvFunc("APP_KEYS")
 
 	//gin
 	//switch to "release" mode in production
@@ -56,10 +47,10 @@ func main() {
 	//end_sessions_cookie
 
 	//redis_sessions
-	//REDIS_HOST := os.Getenv("REDIS_HOST")
-	//REDIS_PASSWORD := os.Getenv("REDIS_PASSWORD")
-	//REDIS_PORT := os.Getenv("REDIS_PORT")
-	//REDIS_SECRET := os.Getenv("REDIS_SECRET")
+	//REDIS_HOST := config.EnvFunc("REDIS_HOST")
+	//REDIS_PASSWORD := config.EnvFunc("REDIS_PASSWORD")
+	//REDIS_PORT := config.EnvFunc("REDIS_PORT")
+	//REDIS_SECRET := config.EnvFunc("REDIS_SECRET")
 
 	//store, err := redis.NewStore(10, "tcp", REDIS_HOST+":"+REDIS_PORT, REDIS_PASSWORD, []byte(REDIS_SECRET))
 
@@ -139,6 +130,6 @@ func main() {
 	//})
 	//end_test
 
-	PORT := os.Getenv("PORT")
+	PORT := config.EnvFunc("PORT")
 	r.Run(PORT) // listen and serve on 0.0.0.0:8080
 }

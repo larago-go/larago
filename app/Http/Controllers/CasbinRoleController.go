@@ -4,7 +4,6 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -75,17 +74,7 @@ func ViewCasbinRole(c *gin.Context) {
 		c.Abort()
 	}
 
-	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 
@@ -137,7 +126,7 @@ func AddCasbinRole(c *gin.Context) {
 	}
 	//end_env
 
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 

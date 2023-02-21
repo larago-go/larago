@@ -4,7 +4,6 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -184,7 +183,7 @@ func ViewUsersLogin(c *gin.Context) {
 		}
 		//end_env
 
-		template := os.Getenv("TEMPLATE")
+		template := config.EnvFunc("TEMPLATE")
 
 		switch {
 
@@ -238,7 +237,7 @@ func ViewUsersRegistration(c *gin.Context) {
 		}
 		//end_env
 
-		template := os.Getenv("TEMPLATE")
+		template := config.EnvFunc("TEMPLATE")
 
 		switch {
 

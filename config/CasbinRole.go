@@ -50,4 +50,3 @@ func CasbinRole() *casbin.Enforcer {
 
 	return e
 }
-

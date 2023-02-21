@@ -4,11 +4,9 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -172,17 +170,7 @@ func ViewUsersList(c *gin.Context) {
 
 	}
 
-	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 
@@ -237,17 +225,7 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 	}
 	//end Gorm_SQL
 
-	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 
@@ -287,17 +265,7 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 
 	}
 
-	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 
