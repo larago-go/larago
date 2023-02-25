@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -174,14 +173,6 @@ func ViewUsersLogin(c *gin.Context) {
 		//c.HTML(http.StatusOK, "login.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		//env
-		env := godotenv.Load()
-
-		if env != nil {
-
-			panic("Error loading .env file")
-
-		}
-		//end_env
 
 		template := config.EnvFunc("TEMPLATE")
 
@@ -228,14 +219,6 @@ func ViewUsersRegistration(c *gin.Context) {
 		//c.HTML(http.StatusOK, "login.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		//env
-		env := godotenv.Load()
-
-		if env != nil {
-
-			panic("Error loading .env file")
-
-		}
-		//end_env
 
 		template := config.EnvFunc("TEMPLATE")
 

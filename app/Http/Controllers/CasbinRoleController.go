@@ -7,7 +7,6 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	csrf "github.com/utrack/gin-csrf"
 )
 
@@ -117,14 +116,6 @@ func AddCasbinRole(c *gin.Context) {
 	}
 
 	//env
-	env := godotenv.Load()
-
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
 
 	template := config.EnvFunc("TEMPLATE")
 

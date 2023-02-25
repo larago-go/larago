@@ -1,12 +1,11 @@
 package Controllers
 
 import (
+	"larago/config"
 	"net/http"
-	"os"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func Welcome(router *gin.RouterGroup) {
@@ -19,16 +18,8 @@ func Welcome(router *gin.RouterGroup) {
 func GetWelcome(c *gin.Context) {
 
 	//env
-	env := godotenv.Load()
 
-	if env != nil {
-
-		panic("Error loading .env file")
-
-	}
-	//end_env
-
-	template := os.Getenv("TEMPLATE")
+	template := config.EnvFunc("TEMPLATE")
 
 	switch {
 
