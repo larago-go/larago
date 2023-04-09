@@ -102,7 +102,7 @@ const submit = () => {
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
-                  <label for="email-address" class="block text-sm font-medium text-gray-700">Method</label>
+                  <label for="email-address" class="block text-sm font-medium text-gray-700">Method (GET,POST,PUT,PATCH,DELETE)</label>
                   <input type="text" name="Method" id="Method" v-model="datavw.form.method"  required autocomplete="Method" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                 </div>
 
