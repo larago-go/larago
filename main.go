@@ -64,7 +64,7 @@ func main() {
 	//end_Memcached
 
 	//sessions_use
-	r.Use(sessions.Sessions("larago", store))
+	r.Use(sessions.Sessions(config.EnvFunc("SESSION_NAME"), store))
 	//end_sessions
 
 	//CSRF_Middleware
