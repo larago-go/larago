@@ -1,15 +1,18 @@
 package Controllers
 
 import (
+	"crypto/tls"
 	"larago/app/Model"
 	"larago/config"
+	"log"
 	"net/http"
-	"net/smtp"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
 	"golang.org/x/crypto/bcrypt"
+	"gopkg.in/gomail.v2"
 )
 
 func Res_pass(router *gin.RouterGroup) {
@@ -49,24 +52,31 @@ func PostForgotPassword(c *gin.Context) {
 
 	//smtp - forgot_password
 
-	toList := []string{input.Email}
+	m := gomail.NewMessage() // E: undeclared name: gomail
+	m.SetHeader("From", config.EnvFunc("MAIL_USERNAME"))
+	m.SetHeader("To", input.Email)
+	m.SetHeader("Subject", "Password recovery")
+	m.SetBody("text/html", "Link to create a new password"+" "+config.EnvFunc("WWWROOT")+"/login/pass/"+rand_urls)
 
-	body := []byte("From:" + config.EnvFunc("MAIL_USERNAME") + "\r\n" +
-		"To:" + input.Email + "\r\n" +
-		"Subject: Password recovery\r\n\r\n" +
-		"Link to create a new password" + " " + config.EnvFunc("WWWROOT") + "/login/pass/" + rand_urls + "\r\n")
+	mail_port, err := strconv.Atoi(config.EnvFunc("MAIL_PORT"))
 
-	auth := smtp.PlainAuth("", config.EnvFunc("MAIL_USERNAME"), config.EnvFunc("MAIL_PASSWORD"), config.EnvFunc("MAIL_HOST"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	mail_encryption, err := strconv.ParseBool(config.EnvFunc("MAIL_ENCRYPTION"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	d := gomail.NewDialer(config.EnvFunc("MAIL_HOST"), mail_port, config.EnvFunc("MAIL_USERNAME"), config.EnvFunc("MAIL_PASSWORD")) // E: undeclared name: gomail
 
-	smtp.SendMail(config.EnvFunc("MAIL_HOST")+":"+config.EnvFunc("MAIL_PORT"), auth, config.EnvFunc("MAIL_USERNAME"), toList, body)
+	//  d := gomail.NewPlainDialer("smtp.example.com", 587, "smtp_username", "smtp_password")
 
-	//err := smtp.SendMail(config.EnvFunc("MAIL_HOST")+":"+config.EnvFunc("MAIL_PORT"), auth, config.EnvFunc("MAIL_USERNAME"), toList, body)
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: mail_encryption}
 
-	// handling the errors
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
+	// Send the email to Bob, Cora and Dan.
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
+	}
 
 	//Gorm_SQL
 
