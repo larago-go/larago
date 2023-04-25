@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"larago/app/Model"
 	"larago/config"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -61,11 +60,11 @@ func PostForgotPassword(c *gin.Context) {
 	mail_port, err := strconv.Atoi(config.EnvFunc("MAIL_PORT"))
 
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	mail_encryption, err := strconv.ParseBool(config.EnvFunc("MAIL_ENCRYPTION"))
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	d := gomail.NewDialer(config.EnvFunc("MAIL_HOST"), mail_port, config.EnvFunc("MAIL_USERNAME"), config.EnvFunc("MAIL_PASSWORD")) // E: undeclared name: gomail
 
@@ -73,7 +72,7 @@ func PostForgotPassword(c *gin.Context) {
 
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: mail_encryption}
 
-	// Send the email to Bob, Cora and Dan.
+	// Send the email.
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
