@@ -35,7 +35,9 @@ func GetWelcome(c *gin.Context) {
 		sessionID := session.Get("user_id")
 
 		//HTML template
-		c.HTML(http.StatusOK, "public_welcome.html", gin.H{"title": "Larago", "session_id": sessionID})
+		c.HTML(http.StatusOK, "public_welcome.html", gin.H{
+			"title":      "Larago",
+			"session_id": sessionID})
 
 	default:
 

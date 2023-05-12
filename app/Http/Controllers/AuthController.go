@@ -50,13 +50,15 @@ func UsersRegistration(c *gin.Context) {
 
 	bytePassword := []byte(input.Password)
 
-	// Make sure the second param `bcrypt generator cost` between [4, 32)
 	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 
 	input.Password = string(passwordHash)
 
 	// Create user
-	user := Model.UserModel{Name: input.Name, Email: input.Email, Password: input.Password}
+	user := Model.UserModel{
+		Name:     input.Name,
+		Email:    input.Email,
+		Password: input.Password}
 
 	//Gorm_SQL
 	config.DB.Save(&user)
@@ -125,8 +127,6 @@ func UsersLogin(c *gin.Context) {
 
 		session.Save()
 
-		//c.JSON(http.StatusOK, gin.H{"message": "User signed in", "user": model.Name, "id": model.ID})
-
 		headerContentTtype := c.Request.Header.Get("Content-Type")
 
 		if headerContentTtype != "application/json" {
@@ -135,7 +135,10 @@ func UsersLogin(c *gin.Context) {
 
 		} else {
 
-			c.IndentedJSON(http.StatusCreated, gin.H{"message": "User signed in", "user": model.Name, "id": model.ID})
+			c.IndentedJSON(http.StatusCreated, gin.H{
+				"message": "User signed in",
+				"user":    model.Name,
+				"id":      model.ID})
 
 		}
 
@@ -153,8 +156,6 @@ func Loginout(c *gin.Context) {
 
 	c.Redirect(http.StatusFound, "/")
 
-	//c.JSON(http.StatusOK, gin.H{"message": "Signed out..."})
-
 }
 
 func ViewUsersLogin(c *gin.Context) {
@@ -164,13 +165,6 @@ func ViewUsersLogin(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
-		//c.JSON(http.StatusForbidden, gin.H{
-		//  "message": "not authed",
-		//})
-		//c.Redirect(http.StatusFound, "/auth/login")
-		//c.Abort()
-		//c.HTML(http.StatusOK, "login.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		//env
 
@@ -210,13 +204,6 @@ func ViewUsersRegistration(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
-		//c.JSON(http.StatusForbidden, gin.H{
-		//  "message": "not authed",
-		//})
-		//c.Redirect(http.StatusFound, "/auth/login")
-		//c.Abort()
-		//c.HTML(http.StatusOK, "login.html", gin.H{"csrf": csrf.GetToken(c)})
 
 		//env
 
@@ -293,11 +280,15 @@ func ViewUserSession(c *gin.Context) {
 
 	if sessionID == nil {
 
-		c.IndentedJSON(http.StatusOK, gin.H{"userid_session_id": "no_auth", "userid_session": "no_auth"})
+		c.IndentedJSON(http.StatusOK, gin.H{
+			"userid_session_id": "no_auth",
+			"userid_session":    "no_auth"})
 
 	} else {
 
-		c.IndentedJSON(http.StatusOK, gin.H{"userid_session_id": sessionID, "userid_session": "auth"})
+		c.IndentedJSON(http.StatusOK, gin.H{
+			"userid_session_id": sessionID,
+			"userid_session":    "auth"})
 
 	}
 

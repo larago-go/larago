@@ -109,7 +109,7 @@ func UpdateUsers(c *gin.Context) {
 	if len(input.Password) > 0 {
 
 		bytePassword := []byte(input.Password)
-		// Make sure the second param `bcrypt generator cost` between [4, 32)
+
 		passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 
 		input.Password = string(passwordHash)
@@ -173,7 +173,6 @@ func DeleteUsers(c *gin.Context) {
 	config.DB.Delete(&model)
 	//end Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": true})
 	c.Redirect(http.StatusFound, "/users/list")
 }
 
@@ -185,9 +184,6 @@ func ViewUsersList(c *gin.Context) {
 
 	if sessionID == nil {
 
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 		c.Redirect(http.StatusFound, "/auth/login")
 
 		c.Abort()
@@ -212,7 +208,11 @@ func ViewUsersList(c *gin.Context) {
 		//end Gorm_SQL
 
 		//HTML template
-		c.HTML(http.StatusOK, "admin_views_users_list.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+		c.HTML(http.StatusOK, "admin_views_users_list.html", gin.H{
+			"csrf":         csrf.GetToken(c),
+			"session_id":   sessionID,
+			"session_name": sessionName,
+			"list":         model})
 
 	default:
 
@@ -232,9 +232,6 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.Redirect(http.StatusFound, "/auth/login")
 
@@ -287,9 +284,7 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
+
 		c.Redirect(http.StatusFound, "/auth/login")
 
 		c.Abort()
@@ -308,7 +303,10 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "admin_views_users_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+		c.HTML(http.StatusOK, "admin_views_users_add.html", gin.H{
+			"csrf":         csrf.GetToken(c),
+			"session_id":   sessionID,
+			"session_name": sessionName})
 
 	default:
 
@@ -330,9 +328,6 @@ func ApiViewUsersList(c *gin.Context) {
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
 
@@ -344,7 +339,11 @@ func ApiViewUsersList(c *gin.Context) {
 	config.DB.Find(&model)
 	//end Gorm_SQL
 
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"csrf":         csrf.GetToken(c),
+		"session_id":   sessionID,
+		"session_name": sessionName,
+		"list":         model})
 
 }
 
@@ -355,9 +354,6 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
 
@@ -366,7 +362,10 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 	}
 
 	//c.JSON(http.StatusOK, gin.H{"data": model})
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"csrf":         csrf.GetToken(c),
+		"session_id":   sessionID,
+		"session_name": sessionName})
 
 }
 
@@ -379,9 +378,6 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
 
@@ -396,7 +392,6 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 	}
 	//end Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": model })
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
@@ -410,7 +405,6 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 }
 
 func ApiDeleteUsers(c *gin.Context) {
-	// Get model if exist
 
 	//Gorm_SQL
 	var model Model.UserModel

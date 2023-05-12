@@ -39,10 +39,17 @@ func AddPostCasbinRole(c *gin.Context) {
 
 	e := config.CasbinRole()
 
-	e.AddPolicy(input.RoleName, input.Path, input.Method)
+	e.AddPolicy(
+		input.RoleName,
+		input.Path,
+		input.Method)
 
 	// Create role
-	role := Model.CasbinRoleModel{RoleName: input.RoleName, Path: input.Path, Method: input.Method}
+	role := Model.CasbinRoleModel{
+		RoleName: input.RoleName,
+		Path:     input.Path,
+		Method:   input.Method}
+
 	//Gorm_SQL
 	config.DB.Save(&role)
 	//end_Gorm_SQL
@@ -66,9 +73,7 @@ func ViewCasbinRole(c *gin.Context) {
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
+
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
@@ -91,7 +96,10 @@ func ViewCasbinRole(c *gin.Context) {
 		//end_Gorm_SQL
 
 		//HTML template
-		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{"session_id": sessionID, "session_name": sessionName, "list": model})
+		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{
+			"session_id":   sessionID,
+			"session_name": sessionName,
+			"list":         model})
 
 	default:
 
@@ -108,11 +116,10 @@ func AddCasbinRole(c *gin.Context) {
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
+
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
+
 	}
 
 	//env
@@ -129,7 +136,10 @@ func AddCasbinRole(c *gin.Context) {
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "admin_views_casbin_role_add.html", gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+		c.HTML(http.StatusOK, "admin_views_casbin_role_add.html", gin.H{
+			"csrf":         csrf.GetToken(c),
+			"session_id":   sessionID,
+			"session_name": sessionName})
 
 	default:
 
@@ -141,7 +151,6 @@ func AddCasbinRole(c *gin.Context) {
 }
 
 func DeleteCasbinRole(c *gin.Context) {
-	// Get model if exist
 
 	var model Model.CasbinRoleModel
 
@@ -153,12 +162,14 @@ func DeleteCasbinRole(c *gin.Context) {
 
 	e := config.CasbinRole()
 
-	e.RemovePolicy(model.RoleName, model.Path, model.Method)
+	e.RemovePolicy(
+		model.RoleName,
+		model.Path,
+		model.Method)
 
 	config.DB.Delete(&model)
 	//end_Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": true})
 	c.Redirect(http.StatusFound, "/role/list")
 }
 
@@ -173,9 +184,6 @@ func ApiViewCasbinRole(c *gin.Context) {
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
 
@@ -187,7 +195,11 @@ func ApiViewCasbinRole(c *gin.Context) {
 	config.DB.Find(&model)
 	//end_Gorm_SQL
 
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName, "list": model})
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"csrf":         csrf.GetToken(c),
+		"session_id":   sessionID,
+		"session_name": sessionName,
+		"list":         model})
 
 }
 
@@ -198,9 +210,6 @@ func ApiAddCasbinRole(c *gin.Context) {
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-		//c.JSON(http.StatusForbidden, gin.H{
-		//	"message": "not authed",
-		//})
 
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
 
@@ -208,13 +217,14 @@ func ApiAddCasbinRole(c *gin.Context) {
 
 	}
 
-	//c.JSON(http.StatusOK, gin.H{"data": model})
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "session_id": sessionID, "session_name": sessionName})
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"csrf":         csrf.GetToken(c),
+		"session_id":   sessionID,
+		"session_name": sessionName})
 
 }
 
 func ApiDeleteCasbinRole(c *gin.Context) {
-	// Get model if exist
 
 	var model Model.CasbinRoleModel
 
@@ -226,7 +236,10 @@ func ApiDeleteCasbinRole(c *gin.Context) {
 
 	e := config.CasbinRole()
 
-	e.RemovePolicy(model.RoleName, model.Path, model.Method)
+	e.RemovePolicy(
+		model.RoleName,
+		model.Path,
+		model.Method)
 
 	config.DB.Delete(&model)
 	//end_Gorm_SQL

@@ -66,9 +66,12 @@ func PostForgotPassword(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	d := gomail.NewDialer(config.EnvFunc("MAIL_HOST"), mail_port, config.EnvFunc("MAIL_USERNAME"), config.EnvFunc("MAIL_PASSWORD")) // E: undeclared name: gomail
 
-	//  d := gomail.NewPlainDialer("smtp.example.com", 587, "smtp_username", "smtp_password")
+	d := gomail.NewDialer(
+		config.EnvFunc("MAIL_HOST"),
+		mail_port,
+		config.EnvFunc("MAIL_USERNAME"),
+		config.EnvFunc("MAIL_PASSWORD"))
 
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: mail_encryption}
 
@@ -79,7 +82,11 @@ func PostForgotPassword(c *gin.Context) {
 
 	//Gorm_SQL
 
-	url_res := Model.ResPassUserModel{Email: input.Email, Url_full: config.EnvFunc("WWWROOT") + "/login/pass/" + rand_urls, Url: rand_urls}
+	url_res := Model.ResPassUserModel{
+		Email:    input.Email,
+		Url_full: config.EnvFunc("WWWROOT") + "/login/pass/" + rand_urls,
+		Url:      rand_urls}
+
 	config.DB.Save(&url_res)
 
 	headerContentTtype := c.Request.Header.Get("Content-Type")
@@ -129,7 +136,9 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 	case template == "html":
 
 		//HTML template
-		c.HTML(http.StatusOK, "admin_auth_forgot_password_new.html", gin.H{"csrf": csrf.GetToken(c), "url": model.Url})
+		c.HTML(http.StatusOK, "admin_auth_forgot_password_new.html", gin.H{
+			"csrf": csrf.GetToken(c),
+			"url":  model.Url})
 
 	default:
 
@@ -226,5 +235,7 @@ func ApiViewRes_passListPrev(c *gin.Context) { // Get model if exist
 	//end Gorm_SQL
 
 	//c.JSON(http.StatusOK, gin.H{"data": model })
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c), "url": model.Url})
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"csrf": csrf.GetToken(c),
+		"url":  model.Url})
 }
