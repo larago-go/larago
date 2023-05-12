@@ -18,7 +18,6 @@ func Welcome(router *gin.RouterGroup) {
 func GetWelcome(c *gin.Context) {
 
 	//env
-
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {

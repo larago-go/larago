@@ -78,7 +78,6 @@ func UpdateUsers(c *gin.Context) {
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
-
 	}
 
 	// Validate input

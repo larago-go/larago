@@ -62,7 +62,9 @@ func PostForgotPassword(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
+
 	mail_encryption, err := strconv.ParseBool(config.EnvFunc("MAIL_ENCRYPTION"))
+
 	if err != nil {
 		panic(err)
 	}
