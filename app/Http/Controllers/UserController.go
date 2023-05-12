@@ -39,11 +39,8 @@ func UsersAddPost(c *gin.Context) {
 	var input UsersValidation
 
 	if err := c.ShouldBind(&input); err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
 		return
-
 	}
 
 	bytePassword := []byte(input.Password)
@@ -62,18 +59,13 @@ func UsersAddPost(c *gin.Context) {
 
 	//Gorm_SQL
 	config.DB.Save(&user)
-	//end Gorm_SQL
 
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/users/list")
-
 	} else {
-
 		c.IndentedJSON(http.StatusCreated, user)
-
 	}
 
 }
@@ -84,33 +76,23 @@ func UpdateUsers(c *gin.Context) {
 	var model Model.UserModel
 
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-
 		return
 
 	}
-	//end Gorm_SQL
 
 	// Validate input
 	var input UsersValidation
 
 	if err := c.ShouldBind(&input); err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
 		return
-
 	}
 
 	if len(input.Password) > 0 {
-
 		bytePassword := []byte(input.Password)
-
 		passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
-
 		input.Password = string(passwordHash)
-
 		//Gorm_SQL
 		config.DB.Model(&model).Select(
 			"name",
@@ -123,10 +105,7 @@ func UpdateUsers(c *gin.Context) {
 			Role:     input.Role,
 			Password: input.Password,
 		})
-		//end Gorm_SQL
-
 	} else {
-
 		//Gorm_SQL
 		config.DB.Model(&model).Select(
 			"name",
@@ -138,20 +117,14 @@ func UpdateUsers(c *gin.Context) {
 			Email: input.Email,
 			Role:  input.Role,
 		})
-		//end Gorm_SQL
-
 	}
 
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/users/list")
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, model)
-
 	}
 
 }
@@ -167,9 +140,9 @@ func DeleteUsers(c *gin.Context) {
 	}
 
 	config.DB.Delete(&model)
-	//end Gorm_SQL
 
 	c.Redirect(http.StatusFound, "/users/list")
+
 }
 
 func ViewUsersList(c *gin.Context) {
@@ -179,42 +152,29 @@ func ViewUsersList(c *gin.Context) {
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.Redirect(http.StatusFound, "/auth/login")
-
 		c.Abort()
-
 	}
 
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//Gorm_SQL
 		var model []Model.UserModel
-
 		config.DB.Find(&model)
-		//end Gorm_SQL
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_users_list.html", gin.H{
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
 			"session_name": sessionName,
 			"list":         model})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -228,31 +188,22 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.Redirect(http.StatusFound, "/auth/login")
-
 		c.Abort()
 	}
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-
 		return
 	}
-	//end Gorm_SQL
 
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_users_list_prev.html", gin.H{
 			"csrf":         csrf.GetToken(c),
@@ -263,12 +214,9 @@ func ViewUsersListPrev(c *gin.Context) { // Get model if exist
 			"email":        model.Email,
 			"role":         model.Role,
 		})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -280,35 +228,25 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.Redirect(http.StatusFound, "/auth/login")
-
 		c.Abort()
-
 	}
 
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_users_add.html", gin.H{
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
 			"session_name": sessionName})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -317,23 +255,18 @@ func ApiViewUsersList(c *gin.Context) {
 
 	//Gorm_SQL
 	var model []Model.UserModel
-	//end Gorm_SQL
 
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
-
 		c.Abort()
-
 	}
 
 	//Gorm_SQL
 	config.DB.Find(&model)
-	//end Gorm_SQL
 
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
@@ -350,11 +283,8 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
-
 		c.Abort()
-
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
@@ -373,19 +303,14 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
-
 		c.Abort()
 	}
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
-
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
-
 		return
 	}
-	//end Gorm_SQL
 
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
@@ -410,7 +335,6 @@ func ApiDeleteUsers(c *gin.Context) {
 	}
 
 	config.DB.Delete(&model)
-	//end Gorm_SQL
 
 	c.IndentedJSON(http.StatusOK, gin.H{"data": true})
 }

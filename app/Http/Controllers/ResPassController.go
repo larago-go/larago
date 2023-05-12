@@ -92,16 +92,10 @@ func PostForgotPassword(c *gin.Context) {
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/")
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"data": true})
-
 	}
-
-	//remove link password recovery after 30 minutes
 
 	time.AfterFunc(30*time.Minute, func() {
 
@@ -122,29 +116,21 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
-	//end Gorm_SQL
 
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_auth_forgot_password_new.html", gin.H{
 			"csrf": csrf.GetToken(c),
 			"url":  model.Url})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -159,7 +145,6 @@ func ViewRes_passListPost(c *gin.Context) { // Get model if exist
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
-	//end Gorm_SQL
 
 	config.DB.Where("email = ?", model.Email).Find(&user_model)
 
@@ -171,59 +156,49 @@ func ViewRes_passListPost(c *gin.Context) { // Get model if exist
 	}
 
 	bytePassword := []byte(input.Password)
-	// Make sure the second param `bcrypt generator cost` between [4, 32)
+
 	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
+
 	input.Password = string(passwordHash)
 
 	//Gorm_SQL
 	config.DB.Model(&user_model).Updates(Model.UserModel{Password: input.Password})
 
-	//c.JSON(http.StatusOK, gin.H{"data": model })
-
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/auth/login")
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"data": true})
-
 	}
+
 }
 
-func ViewForgotPassword(c *gin.Context) { // Get model if exist
+func ViewForgotPassword(c *gin.Context) {
 
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_auth_forgot_password.html", gin.H{"csrf": csrf.GetToken(c)})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
 
-func ApiViewForgotPassword(c *gin.Context) { // Get model if exist
+func ApiViewForgotPassword(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
+
 }
 
-func ApiViewRes_passListPrev(c *gin.Context) { // Get model if exist
+func ApiViewRes_passListPrev(c *gin.Context) {
 
 	var model Model.ResPassUserModel
 
@@ -232,9 +207,7 @@ func ApiViewRes_passListPrev(c *gin.Context) { // Get model if exist
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
-	//end Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": model })
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf": csrf.GetToken(c),
 		"url":  model.Url})

@@ -41,11 +41,8 @@ func UsersRegistration(c *gin.Context) {
 	var input PasswordValidation
 
 	if err := c.ShouldBind(&input); err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
 		return
-
 	}
 
 	bytePassword := []byte(input.Password)
@@ -62,18 +59,13 @@ func UsersRegistration(c *gin.Context) {
 
 	//Gorm_SQL
 	config.DB.Save(&user)
-	//end Gorm_SQL
 
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/home")
-
 	} else {
-
 		c.IndentedJSON(http.StatusCreated, user)
-
 	}
 
 }
@@ -84,18 +76,14 @@ func UsersLogin(c *gin.Context) {
 	var input LoginValidation
 
 	if err := c.ShouldBind(&input); err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-
 		return
-
 	}
 
 	var model Model.UserModel
 
 	//Gorm_SQL
 	config.DB.Where("email = ?", input.Email).First(&model)
-	//end Gorm_SQL
 
 	bytePassword := []byte(input.Password)
 
@@ -104,42 +92,29 @@ func UsersLogin(c *gin.Context) {
 	err := bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
 
 	if err != nil {
-
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
 			"error":   "Password mismatch",
 		})
-
 		return
-
 	} else {
-
 		session := sessions.Default(c)
-
 		session.Set("user_id", model.ID)
-
 		session.Set("user_email", model.Email)
-
 		session.Set("user_name", model.Name)
-
 		//Casbinrole
 		session.Set("user_role", model.Role)
-
 		session.Save()
 
 		headerContentTtype := c.Request.Header.Get("Content-Type")
 
 		if headerContentTtype != "application/json" {
-
 			c.Redirect(http.StatusFound, "/home")
-
 		} else {
-
 			c.IndentedJSON(http.StatusCreated, gin.H{
 				"message": "User signed in",
 				"user":    model.Name,
 				"id":      model.ID})
-
 		}
 
 	}
@@ -165,34 +140,23 @@ func ViewUsersLogin(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
 		//env
-
 		template := config.EnvFunc("TEMPLATE")
 
 		switch {
-
 		case template == "vue":
-
 			//VUE template
 			c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 		case template == "html":
-
 			//HTML template
 			c.HTML(http.StatusOK, "admin_auth_login.html", gin.H{"csrf": csrf.GetToken(c)})
-
 		default:
-
 			//VUE template
 			c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 		}
 
 	} else {
-
 		c.Redirect(http.StatusFound, "/home")
-
 	}
 
 }
@@ -204,34 +168,23 @@ func ViewUsersRegistration(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
 		//env
-
 		template := config.EnvFunc("TEMPLATE")
 
 		switch {
-
 		case template == "vue":
-
 			//VUE template
 			c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 		case template == "html":
-
 			//HTML template
 			c.HTML(http.StatusOK, "admin_auth_register.html", gin.H{"csrf": csrf.GetToken(c)})
-
 		default:
-
 			//VUE template
 			c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 		}
 
 	} else {
-
 		c.Redirect(http.StatusFound, "/home")
-
 	}
 
 }
@@ -243,13 +196,9 @@ func ApiViewUsersRegistration(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
-
 	}
 
 }
@@ -261,13 +210,9 @@ func ApiViewUsersLogin(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
-
 	}
 
 }
@@ -279,17 +224,13 @@ func ViewUserSession(c *gin.Context) {
 	sessionID := session.Get("user_id")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"userid_session_id": "no_auth",
 			"userid_session":    "no_auth"})
-
 	} else {
-
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"userid_session_id": sessionID,
 			"userid_session":    "auth"})
-
 	}
 
 }

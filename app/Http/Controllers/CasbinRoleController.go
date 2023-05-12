@@ -52,18 +52,13 @@ func AddPostCasbinRole(c *gin.Context) {
 
 	//Gorm_SQL
 	config.DB.Save(&role)
-	//end_Gorm_SQL
 
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
-
 		c.Redirect(http.StatusFound, "/role/list")
-
 	} else {
-
 		c.IndentedJSON(http.StatusCreated, role)
-
 	}
 }
 
@@ -72,8 +67,8 @@ func ViewCasbinRole(c *gin.Context) {
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
-	if sessionID == nil {
 
+	if sessionID == nil {
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
 	}
@@ -81,31 +76,21 @@ func ViewCasbinRole(c *gin.Context) {
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//Gorm_SQL
 		var model []Model.CasbinRoleModel
-
 		config.DB.Find(&model)
-		//end_Gorm_SQL
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{
 			"session_id":   sessionID,
 			"session_name": sessionName,
 			"list":         model})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -115,37 +100,28 @@ func AddCasbinRole(c *gin.Context) {
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
-	if sessionID == nil {
 
+	if sessionID == nil {
 		c.Redirect(http.StatusFound, "/auth/login")
 		c.Abort()
-
 	}
 
 	//env
-
 	template := config.EnvFunc("TEMPLATE")
 
 	switch {
-
 	case template == "vue":
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	case template == "html":
-
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_casbin_role_add.html", gin.H{
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
 			"session_name": sessionName})
-
 	default:
-
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
-
 	}
 
 }
@@ -168,7 +144,6 @@ func DeleteCasbinRole(c *gin.Context) {
 		model.Method)
 
 	config.DB.Delete(&model)
-	//end_Gorm_SQL
 
 	c.Redirect(http.StatusFound, "/role/list")
 }
@@ -177,23 +152,18 @@ func ApiViewCasbinRole(c *gin.Context) {
 
 	//Gorm_SQL
 	var model []Model.CasbinRoleModel
-	//end_Gorm_SQL
 
 	session := sessions.Default(c)
 	sessionID := session.Get("user_id")
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
-
 		c.Abort()
-
 	}
 
 	//Gorm_SQL
 	config.DB.Find(&model)
-	//end_Gorm_SQL
 
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
@@ -210,11 +180,8 @@ func ApiAddCasbinRole(c *gin.Context) {
 	sessionName := session.Get("user_name")
 
 	if sessionID == nil {
-
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
-
 		c.Abort()
-
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
@@ -242,7 +209,6 @@ func ApiDeleteCasbinRole(c *gin.Context) {
 		model.Method)
 
 	config.DB.Delete(&model)
-	//end_Gorm_SQL
 
 	c.IndentedJSON(http.StatusOK, gin.H{"data": true})
 }

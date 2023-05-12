@@ -13,13 +13,9 @@ func AuthMiddleware(bool) gin.HandlerFunc {
 		sessionID := session.Get("user_id")
 
 		if sessionID == nil {
-			//	c.JSON(http.StatusForbidden, gin.H{
-			//		"message": "not authed",
-			//	})
 			c.Redirect(http.StatusFound, "/auth/login")
 			c.Abort()
 		}
 
 	}
 }
-
