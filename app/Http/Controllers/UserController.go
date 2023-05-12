@@ -47,7 +47,7 @@ func UsersAddPost(c *gin.Context) {
 	}
 
 	bytePassword := []byte(input.Password)
-	// Make sure the second param `bcrypt generator cost` between [4, 32)
+
 	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 
 	input.Password = string(passwordHash)
@@ -64,8 +64,6 @@ func UsersAddPost(c *gin.Context) {
 	config.DB.Save(&user)
 	//end Gorm_SQL
 
-	//c.JSON(http.StatusOK, gin.H{"data": user})
-
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
@@ -81,7 +79,6 @@ func UsersAddPost(c *gin.Context) {
 }
 
 func UpdateUsers(c *gin.Context) {
-	// Get model if exist
 
 	//Gorm_SQL
 	var model Model.UserModel
@@ -160,7 +157,6 @@ func UpdateUsers(c *gin.Context) {
 }
 
 func DeleteUsers(c *gin.Context) {
-	// Get model if exist
 
 	//Gorm_SQL
 	var model Model.UserModel
@@ -361,7 +357,6 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 
 	}
 
-	//c.JSON(http.StatusOK, gin.H{"data": model})
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
