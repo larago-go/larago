@@ -38,7 +38,8 @@ func ViewHome(c *gin.Context) {
 		//HTML template
 		c.HTML(http.StatusOK, "admin_views_home.html", gin.H{
 			"session_id":   sessionID,
-			"session_name": sessionName})
+			"session_name": sessionName,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -60,6 +61,7 @@ func ApiViewHome(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
-		"session_name": sessionName})
+		"session_name": sessionName,
+	})
 
 }

@@ -170,7 +170,8 @@ func ViewUsersList(c *gin.Context) {
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
 			"session_name": sessionName,
-			"list":         model})
+			"list":         model,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -242,7 +243,8 @@ func ViewAddUsers(c *gin.Context) { // Get model if exist
 		c.HTML(http.StatusOK, "admin_views_users_add.html", gin.H{
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
-			"session_name": sessionName})
+			"session_name": sessionName,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -271,7 +273,8 @@ func ApiViewUsersList(c *gin.Context) {
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
 		"session_name": sessionName,
-		"list":         model})
+		"list":         model,
+	})
 
 }
 
@@ -289,7 +292,8 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
-		"session_name": sessionName})
+		"session_name": sessionName,
+	})
 
 }
 

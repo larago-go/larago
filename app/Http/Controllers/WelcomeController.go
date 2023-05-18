@@ -30,7 +30,8 @@ func GetWelcome(c *gin.Context) {
 		//HTML template
 		c.HTML(http.StatusOK, "public_welcome.html", gin.H{
 			"title":      "Larago",
-			"session_id": sessionID})
+			"session_id": sessionID,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})

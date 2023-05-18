@@ -87,7 +87,8 @@ func PostForgotPassword(c *gin.Context) {
 	url_res := Model.ResPassUserModel{
 		Email:    input.Email,
 		Url_full: config.EnvFunc("WWWROOT") + "/login/pass/" + rand_urls,
-		Url:      rand_urls}
+		Url:      rand_urls,
+	}
 
 	config.DB.Save(&url_res)
 
@@ -129,7 +130,8 @@ func ViewRes_passListPrev(c *gin.Context) { // Get model if exist
 		//HTML template
 		c.HTML(http.StatusOK, "admin_auth_forgot_password_new.html", gin.H{
 			"csrf": csrf.GetToken(c),
-			"url":  model.Url})
+			"url":  model.Url,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -212,5 +214,6 @@ func ApiViewRes_passListPrev(c *gin.Context) {
 
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf": csrf.GetToken(c),
-		"url":  model.Url})
+		"url":  model.Url,
+	})
 }

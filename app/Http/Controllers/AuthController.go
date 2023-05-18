@@ -55,7 +55,8 @@ func UsersRegistration(c *gin.Context) {
 	user := Model.UserModel{
 		Name:     input.Name,
 		Email:    input.Email,
-		Password: input.Password}
+		Password: input.Password,
+	}
 
 	//Gorm_SQL
 	config.DB.Save(&user)
@@ -114,7 +115,8 @@ func UsersLogin(c *gin.Context) {
 			c.IndentedJSON(http.StatusCreated, gin.H{
 				"message": "User signed in",
 				"user":    model.Name,
-				"id":      model.ID})
+				"id":      model.ID,
+			})
 		}
 
 	}
@@ -226,11 +228,13 @@ func ViewUserSession(c *gin.Context) {
 	if sessionID == nil {
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"userid_session_id": "no_auth",
-			"userid_session":    "no_auth"})
+			"userid_session":    "no_auth",
+		})
 	} else {
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"userid_session_id": sessionID,
-			"userid_session":    "auth"})
+			"userid_session":    "auth",
+		})
 	}
 
 }

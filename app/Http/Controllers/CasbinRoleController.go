@@ -42,13 +42,15 @@ func AddPostCasbinRole(c *gin.Context) {
 	e.AddPolicy(
 		input.RoleName,
 		input.Path,
-		input.Method)
+		input.Method,
+	)
 
 	// Create role
 	role := Model.CasbinRoleModel{
 		RoleName: input.RoleName,
 		Path:     input.Path,
-		Method:   input.Method}
+		Method:   input.Method,
+	}
 
 	//Gorm_SQL
 	config.DB.Save(&role)
@@ -87,7 +89,8 @@ func ViewCasbinRole(c *gin.Context) {
 		c.HTML(http.StatusOK, "admin_views_casbin_role.html", gin.H{
 			"session_id":   sessionID,
 			"session_name": sessionName,
-			"list":         model})
+			"list":         model,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -118,7 +121,8 @@ func AddCasbinRole(c *gin.Context) {
 		c.HTML(http.StatusOK, "admin_views_casbin_role_add.html", gin.H{
 			"csrf":         csrf.GetToken(c),
 			"session_id":   sessionID,
-			"session_name": sessionName})
+			"session_name": sessionName,
+		})
 	default:
 		//VUE template
 		c.HTML(http.StatusOK, "index.html", gin.H{"title": "Larago"})
@@ -141,7 +145,8 @@ func DeleteCasbinRole(c *gin.Context) {
 	e.RemovePolicy(
 		model.RoleName,
 		model.Path,
-		model.Method)
+		model.Method,
+	)
 
 	config.DB.Delete(&model)
 
@@ -169,7 +174,8 @@ func ApiViewCasbinRole(c *gin.Context) {
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
 		"session_name": sessionName,
-		"list":         model})
+		"list":         model,
+	})
 
 }
 
@@ -187,7 +193,8 @@ func ApiAddCasbinRole(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, gin.H{
 		"csrf":         csrf.GetToken(c),
 		"session_id":   sessionID,
-		"session_name": sessionName})
+		"session_name": sessionName,
+	})
 
 }
 
@@ -206,7 +213,8 @@ func ApiDeleteCasbinRole(c *gin.Context) {
 	e.RemovePolicy(
 		model.RoleName,
 		model.Path,
-		model.Method)
+		model.Method,
+	)
 
 	config.DB.Delete(&model)
 
