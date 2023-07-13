@@ -15,7 +15,7 @@ func UsersRegister(router *gin.RouterGroup) {
 
 	router.POST("/post_add", UsersAddPost)
 	router.POST("/list/:id/edit", UpdateUsers)
-	router.PUT("/api/list/:id/edit", UpdateUsers)
+	router.PATCH("/api/list/:id/edit", UpdateUsers)
 	router.GET("/list/:id/delete", DeleteUsers)
 	router.GET("/add", ViewAddUsers)
 	router.GET("/list", ViewUsersList)
@@ -110,7 +110,6 @@ func UpdateUsers(c *gin.Context) {
 			"name",
 			"email",
 			"role",
-			"password",
 		).Updates(Model.UserModel{
 			Name:  input.Name,
 			Email: input.Email,

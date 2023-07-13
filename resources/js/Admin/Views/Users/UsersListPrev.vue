@@ -59,8 +59,8 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.put['X-CSRF-Token'] = datavw.value.csrf;
-    Connect.put("/users/api/list/" + route.params.id + "/edit", datavw.value.form)
+    Connect.defaults.headers.patch['X-CSRF-Token'] = datavw.value.csrf;
+    Connect.patch("/users/api/list/" + route.params.id + "/edit", datavw.value.form)
       .then((response) => {
         response.name = '';
         response.email = '';
