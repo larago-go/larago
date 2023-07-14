@@ -70,9 +70,9 @@ onMounted(function () {
 });
 
 const columns = [
-  { data: 'RoleName', title: 'Роль' },
-  { data: 'Path', title: 'Доступ' },
-  { data: 'Method', title: 'Метод' },
+  { data: 'RoleName', title: 'RoleName' },
+  { data: 'Path', title: 'Path' },
+  { data: 'Method', title: 'Method' },
 ];
 
 function add() {
