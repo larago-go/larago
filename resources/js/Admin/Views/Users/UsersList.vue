@@ -16,6 +16,10 @@ import FooterAdmin from '../FooterAdmin.vue';
 
 import Connect from '../../../confconnect';
 
+import 'datatables.net-select';
+  
+import 'datatables.net-searchbuilder-dt';
+
 let dt;
 
 DataTable.use(DataTablesLib);
