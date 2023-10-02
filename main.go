@@ -82,6 +82,8 @@ func main() {
 	r.Static("/public", "./public")
 	r.Static("/node_modules", "./node_modules")
 
+	r.MaxMultipartMemory = 8 << 20
+
 	//switch vue | html template"
 	//html
 	//r.LoadHTMLGlob("resources/views/*.html")
