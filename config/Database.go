@@ -36,7 +36,7 @@ func Init() {
 	dsn := DB_USERNAME + ":" + DB_PASSWORD + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_DATABASE + "?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	//postgres
-	//dsn := "user="+DB_USERNAME+" password="+DB_PASSWORD+" dbname="+DB_DATABASE+" port="+DB_PORT+" sslmode=disable TimeZone=Asia/Shanghai"
+	//dsn := "host=" + DB_HOST + " user="+DB_USERNAME+" password="+DB_PASSWORD+" dbname="+DB_DATABASE+" port="+DB_PORT+" sslmode=disable TimeZone=Asia/Shanghai"
 	//db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	//sqlite
 	//db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
