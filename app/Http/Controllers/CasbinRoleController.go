@@ -37,13 +37,14 @@ func AddPostCasbinRole(c *gin.Context) {
 		return
 	}
 
-	e := config.CasbinRole()
+	role_c := Model.CasbinRoleConf{
+		Ptype:    "p",
+		RoleName: input.RoleName,
+		Path:     input.Path,
+		Method:   input.Method,
+	}
 
-	e.AddPolicy(
-		input.RoleName,
-		input.Path,
-		input.Method,
-	)
+	config.DB.Save(&role_c)
 
 	// Create role
 	role := Model.CasbinRoleModel{
@@ -133,20 +134,16 @@ func AddCasbinRole(c *gin.Context) {
 func DeleteCasbinRole(c *gin.Context) {
 
 	var model Model.CasbinRoleModel
-
+	var model_conf Model.CasbinRoleConf
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
 
-	e := config.CasbinRole()
+	config.DB.Where("v0 = ?", model.RoleName).Where("v1 = ?", model.Path).Where("v2 = ?", model.Method).First(&model_conf)
 
-	e.RemovePolicy(
-		model.RoleName,
-		model.Path,
-		model.Method,
-	)
+	config.DB.Delete(&model_conf)
 
 	config.DB.Delete(&model)
 
@@ -201,20 +198,16 @@ func ApiAddCasbinRole(c *gin.Context) {
 func ApiDeleteCasbinRole(c *gin.Context) {
 
 	var model Model.CasbinRoleModel
-
+	var model_conf Model.CasbinRoleConf
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
 
-	e := config.CasbinRole()
+	config.DB.Where("v0 = ?", model.RoleName).Where("v1 = ?", model.Path).Where("v2 = ?", model.Method).First(&model_conf)
 
-	e.RemovePolicy(
-		model.RoleName,
-		model.Path,
-		model.Method,
-	)
+	config.DB.Delete(&model_conf)
 
 	config.DB.Delete(&model)
 

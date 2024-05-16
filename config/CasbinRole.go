@@ -48,5 +48,7 @@ func CasbinRole() *casbin.Enforcer {
 
 	e.LoadPolicy()
 
+	a.Close()
+
 	return e
 }
