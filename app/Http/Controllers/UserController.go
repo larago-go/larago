@@ -275,6 +275,8 @@ func ApiViewUsersList(c *gin.Context) {
 		"list":         model,
 	})
 
+	//UsersList.vue
+
 }
 
 func ApiViewAddUsers(c *gin.Context) { // Get model if exist
@@ -293,6 +295,8 @@ func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 		"session_id":   sessionID,
 		"session_name": sessionName,
 	})
+
+	//UsersAdd.vue
 
 }
 
@@ -323,6 +327,8 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 		"email":        model.Email,
 		"role":         model.Role,
 	})
+
+	//UsersListPrev.vue
 
 }
 

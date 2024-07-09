@@ -64,4 +64,6 @@ func ApiViewHome(c *gin.Context) {
 		"session_name": sessionName,
 	})
 
+	// DashboardAdmin.vue
+
 }

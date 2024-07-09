@@ -174,6 +174,8 @@ func ApiViewCasbinRole(c *gin.Context) {
 		"list":         model,
 	})
 
+	//CasbinroleList.vue
+
 }
 
 func ApiAddCasbinRole(c *gin.Context) {
@@ -192,6 +194,8 @@ func ApiAddCasbinRole(c *gin.Context) {
 		"session_id":   sessionID,
 		"session_name": sessionName,
 	})
+
+	//CasbinroleAdd.vue
 
 }
 

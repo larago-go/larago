@@ -203,6 +203,7 @@ func ApiViewUsersRegistration(c *gin.Context) {
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
 	}
 
+	// RegisterAuth.vue
 }
 
 func ApiViewUsersLogin(c *gin.Context) {
@@ -216,6 +217,8 @@ func ApiViewUsersLogin(c *gin.Context) {
 	} else {
 		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
 	}
+
+	//LoginAuth.vue
 
 }
 
