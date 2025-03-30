@@ -62,27 +62,30 @@ func UsersRegistration(c *gin.Context) {
 	//Gorm_SQL
 	config.DB.Save(&user)
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id":    user.ID,
-		"user_email": user.Email,
-		"user_name":  user.Name,
-		"user_role":  user.Role,
-		//session time
-		"exp": time.Now().Add(time.Hour * 1).Unix(),
-	})
-
-	tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
+		session := sessions.Default(c)
+		session.Set("user_id", user.ID)
+		session.Set("user_email", user.Email)
+		session.Set("user_name", user.Name)
+		session.Save()
 		c.Redirect(http.StatusFound, "/home")
 	} else {
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"user_id":    user.ID,
+			"user_email": user.Email,
+			"user_name":  user.Name,
+			//session time
+			"exp": time.Now().Add(time.Hour * 1).Unix(),
+		})
+
+		tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 		c.IndentedJSON(http.StatusOK, gin.H{
 			"user_name":  user.Name,
 			"user_email": user.Email,
@@ -123,27 +126,34 @@ func UsersLogin(c *gin.Context) {
 		return
 	} else {
 
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"user_id":    model.ID,
-			"user_email": model.Email,
-			"user_name":  model.Name,
-			"user_role":  model.Role,
-			//session time
-			"exp": time.Now().Add(time.Hour * 1).Unix(),
-		})
-
-		tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
-
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
 		headerContentTtype := c.Request.Header.Get("Content-Type")
 
 		if headerContentTtype != "application/json" {
+			session := sessions.Default(c)
+			session.Set("user_id", model.ID)
+			session.Set("user_email", model.Email)
+			session.Set("user_name", model.Name)
+			//Casbinrole
+			session.Set("user_role", model.Role)
+			session.Save()
+
 			c.Redirect(http.StatusFound, "/home")
 		} else {
+			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+				"user_id":    model.ID,
+				"user_email": model.Email,
+				"user_name":  model.Name,
+				"user_role":  model.Role,
+				//session time
+				"exp": time.Now().Add(time.Hour * 1).Unix(),
+			})
+
+			tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
+
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+				return
+			}
 			c.IndentedJSON(http.StatusCreated, gin.H{
 				"user_name":  model.Name,
 				"user_email": model.Email,
