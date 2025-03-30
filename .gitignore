@@ -1,6 +1,5 @@
 # ignore all logs
 node_modules/
-dist/
 *~
 *.swp
 *.swn
