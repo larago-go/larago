@@ -22,12 +22,8 @@ const created = () => {
   try {
     Connect.get('/home/api')
       .then((response) => {
-        if (response.data.csrf === 'redirect_auth_login') {
-          router.push({ name: 'login' });
-        } else {
           session.value.session_id = response.data.session_id;
           session.value.session_name = response.data.session_name;
-        }
       });
   } catch (error) {
     console.log(error);

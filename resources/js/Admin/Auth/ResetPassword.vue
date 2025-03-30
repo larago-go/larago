@@ -14,7 +14,6 @@ const route = useRoute();
 
 const datavw = ref({
 
-  csrf: '',
   url: '',
   error: '',
   form:
@@ -30,7 +29,6 @@ const created = () => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
         } else {
-          datavw.value.csrf = response.data.csrf;
           datavw.value.url = response.data.url;
         }
       });
@@ -43,7 +41,6 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
     Connect.post("/login/pass/" + route.params.url + "/post", datavw.value.form)
       .then((response) => {
         response.password = '';

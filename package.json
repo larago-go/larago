@@ -19,7 +19,9 @@
     "axios": "^0.21",
     "cypress": "^12.0.2",
     "datatables.net": "^1.13.5",
+    "datatables.net-datetime": "^1.5.0",
     "datatables.net-dt": "^1.13.5",
+    "datatables.net-fixedcolumns-dt": "^4.3.0",
     "datatables.net-searchbuilder-dt": "^1.5.0",
     "datatables.net-select": "^1.7.0",
     "datatables.net-vue3": "^2.1.1",
@@ -48,3 +50,4 @@
     "vitest": "^0.25.6"
   }
 }
+

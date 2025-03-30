@@ -8,7 +8,6 @@ import Connect from '../../confconnect';
 
 const datavw = ref({
 
-  csrf: '',
   error: '',
 
   form:
@@ -23,8 +22,6 @@ const created = () => {
       .then((response) => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
-        } else {
-          datavw.value.csrf = response.data.csrf;
         }
       });
   } catch (error) {
@@ -36,11 +33,10 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
     Connect.post('/login/post_add', datavw.value.form)
       .then((response) => {
         response.email = '';
-        window.location.href = '/';
+        router.push({ name: 'welcome' });
       });
   } catch (error) {
     datavw.value.error = error;

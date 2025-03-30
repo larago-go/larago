@@ -4,7 +4,9 @@ import (
 	"larago/app/Model"
 	"larago/config"
 	"net/http"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
@@ -20,7 +22,6 @@ func Auth(router *gin.RouterGroup) {
 	router.GET("/register", ViewUsersRegistration)
 	router.GET("/api/register", ApiViewUsersRegistration)
 	router.GET("/api/login", ApiViewUsersLogin)
-	router.GET("/api/session", ViewUserSession)
 	router.GET("/api/signout", ApiLoginout)
 }
 
@@ -61,12 +62,34 @@ func UsersRegistration(c *gin.Context) {
 	//Gorm_SQL
 	config.DB.Save(&user)
 
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user_id":    user.ID,
+		"user_email": user.Email,
+		"user_name":  user.Name,
+		"user_role":  user.Role,
+		//session time
+		"exp": time.Now().Add(time.Hour * 1).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	headerContentTtype := c.Request.Header.Get("Content-Type")
 
 	if headerContentTtype != "application/json" {
 		c.Redirect(http.StatusFound, "/home")
 	} else {
-		c.IndentedJSON(http.StatusCreated, user)
+		c.IndentedJSON(http.StatusOK, gin.H{
+			"user_name":  user.Name,
+			"user_email": user.Email,
+			"user_id":    user.ID,
+			"token":      tokenString,
+		})
+
 	}
 
 }
@@ -99,13 +122,22 @@ func UsersLogin(c *gin.Context) {
 		})
 		return
 	} else {
-		session := sessions.Default(c)
-		session.Set("user_id", model.ID)
-		session.Set("user_email", model.Email)
-		session.Set("user_name", model.Name)
-		//Casbinrole
-		session.Set("user_role", model.Role)
-		session.Save()
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"user_id":    model.ID,
+			"user_email": model.Email,
+			"user_name":  model.Name,
+			"user_role":  model.Role,
+			//session time
+			"exp": time.Now().Add(time.Hour * 1).Unix(),
+		})
+
+		tokenString, err := token.SignedString([]byte(config.EnvFunc("APP_KEYS")))
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 
 		headerContentTtype := c.Request.Header.Get("Content-Type")
 
@@ -113,9 +145,10 @@ func UsersLogin(c *gin.Context) {
 			c.Redirect(http.StatusFound, "/home")
 		} else {
 			c.IndentedJSON(http.StatusCreated, gin.H{
-				"message": "User signed in",
-				"user":    model.Name,
-				"id":      model.ID,
+				"user_name":  model.Name,
+				"user_email": model.Email,
+				"user_id":    model.ID,
+				"token":      tokenString,
 			})
 		}
 
@@ -193,62 +226,20 @@ func ViewUsersRegistration(c *gin.Context) {
 
 func ApiViewUsersRegistration(c *gin.Context) {
 
-	session := sessions.Default(c)
-
-	sessionID := session.Get("user_id")
-
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
-	} else {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
-	}
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "ok..."})
 
 	// RegisterAuth.vue
 }
 
 func ApiViewUsersLogin(c *gin.Context) {
 
-	session := sessions.Default(c)
-
-	sessionID := session.Get("user_id")
-
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
-	} else {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_home"})
-	}
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "ok..."})
 
 	//LoginAuth.vue
 
 }
 
-func ViewUserSession(c *gin.Context) {
-
-	session := sessions.Default(c)
-
-	sessionID := session.Get("user_id")
-
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{
-			"userid_session_id": "no_auth",
-			"userid_session":    "no_auth",
-		})
-	} else {
-		c.IndentedJSON(http.StatusOK, gin.H{
-			"userid_session_id": sessionID,
-			"userid_session":    "auth",
-		})
-	}
-
-}
-
 func ApiLoginout(c *gin.Context) {
-
-	session := sessions.Default(c)
-
-	session.Clear()
-
-	session.Save()
 
 	c.IndentedJSON(http.StatusOK, gin.H{"message": "Signed out..."})
 

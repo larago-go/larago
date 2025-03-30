@@ -3,9 +3,9 @@ package Controllers
 import (
 	"larago/config"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	csrf "github.com/utrack/gin-csrf"
 
 	"net/http"
 )
@@ -49,19 +49,19 @@ func ViewHome(c *gin.Context) {
 
 func ApiViewHome(c *gin.Context) {
 
-	session := sessions.Default(c)
-	sessionID := session.Get("user_id")
-	sessionName := session.Get("user_name")
+	claims, exists := c.Get("claims")
 
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+	if !exists {
+		c.IndentedJSON(http.StatusOK, gin.H{"redirect": "redirect_auth_login"})
 		c.Abort()
 	}
 
+	userClaims := claims.(*jwt.MapClaims)
+
+	user_name := (*userClaims)["user_name"].(string)
+
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"csrf":         csrf.GetToken(c),
-		"session_id":   sessionID,
-		"session_name": sessionName,
+		"session_name": user_name,
 	})
 
 	// DashboardAdmin.vue

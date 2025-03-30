@@ -16,30 +16,17 @@ import { MenuIcon, XIcon } from '@heroicons/vue/outline';
 
 import Connect from '../confconnect';
 
-const session = ref({
-  userid_session: '',
-  userid_session_id: '',
-  status_auth_no: 'no_auth',
-  status_auth_yes: 'auth',
-});
 
-const created = () => {
-  try {
-    Connect.get('/auth/api/session')
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        session.value.userid_session = response.data.userid_session;
-        session.value.userid_session_id = response.data.userid_session_id;
-      });
-  } catch (error) {
-    console.log(error);
-  }
-};
+const token = localStorage.getItem('token');
 
-created();
+const user =  localStorage.getItem('user_name');
+
 
 const SessionOut = () => {
   Connect.get('/auth/api/signout');
+
+  localStorage.removeItem('token');  
+
   window.location.href = '/';
 };
 </script>
@@ -68,7 +55,7 @@ const SessionOut = () => {
             </div>
           </div>
         </div>
-        <div v-if="session.userid_session === session.status_auth_yes" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+        <div v-if="token" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
         <!--  <button type="button" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
             <span class="sr-only">View notifications</span>
             <BellIcon class="h-6 w-6" aria-hidden="true" />

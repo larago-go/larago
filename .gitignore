@@ -1,0 +1,9 @@
+# ignore all logs
+node_modules/
+*~
+*.swp
+*.swn
+*.swm
+*.swo
+*.swk
+*.swl

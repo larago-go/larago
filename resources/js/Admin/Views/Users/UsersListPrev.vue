@@ -22,7 +22,6 @@ const datavw = ref({
   id: '',
   error: '',
 
-  csrf: '',
   form:
     {
       name: '',
@@ -38,10 +37,7 @@ const created = () => {
       .then((response) => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
-        } else if (response.data.csrf === 'redirect_auth_login') {
-          router.push({ name: 'login' });
         } else {
-          datavw.value.csrf = response.data.csrf;
           datavw.value.session_id = response.data.session_id;
           datavw.value.session_name = response.data.session_name;
           datavw.value.id = response.data.id;
@@ -59,7 +55,6 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.patch['X-CSRF-Token'] = datavw.value.csrf;
     Connect.patch("/users/api/list/" + route.params.id + "/edit", datavw.value.form)
       .then((response) => {
         response.name = '';

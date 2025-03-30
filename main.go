@@ -5,15 +5,11 @@ import (
 	"larago/app/Http/Middleware"
 	"larago/config"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	csrf "github.com/utrack/gin-csrf"
-
 	///sessions_redis
 	//"github.com/gin-contrib/sessions/redis"
 	//end_sessions_redis
 	//sessions_cookie
-	"github.com/gin-contrib/sessions/cookie"
 	//end_sessions_cookie
 	//Memcached
 	//"github.com/bradfitz/gomemcache/memcache"
@@ -27,7 +23,7 @@ func main() {
 	config.Init()
 	//end_database_SQL
 
-	APP_KEYS := config.EnvFunc("APP_KEYS")
+	//APP_KEYS := config.EnvFunc("APP_KEYS")
 
 	//gin
 	//switch to "release" mode in production
@@ -43,7 +39,7 @@ func main() {
 	//sessions
 
 	//sessions_cookie
-	store := cookie.NewStore([]byte(APP_KEYS))
+	//store := cookie.NewStore([]byte(APP_KEYS))
 	//end_sessions_cookie
 
 	//redis_sessions
@@ -64,18 +60,8 @@ func main() {
 	//end_Memcached
 
 	//sessions_use
-	r.Use(sessions.Sessions(config.EnvFunc("SESSION_NAME"), store))
+	//r.Use(sessions.Sessions(config.EnvFunc("SESSION_NAME"), store))
 	//end_sessions
-
-	//CSRF_Middleware
-	r.Use(csrf.Middleware(csrf.Options{
-		Secret: APP_KEYS,
-		ErrorFunc: func(c *gin.Context) {
-			c.String(400, "CSRF token mismatch")
-			c.Abort()
-		},
-	}))
-	//end_CSRF_Middleware
 
 	//gin_html_and_static
 	r.Static("/assets", "./dist/assets")
@@ -102,14 +88,19 @@ func main() {
 	res_pass := r.Group("/login")
 	Controllers.Res_pass(res_pass.Group("/"))
 
+	//JWT_Middleware
+	r.Use(Middleware.ValidateToken())
+	//end_JWT_Middleware
+
 	//Auth_Middleware
-	r.Use(Middleware.AuthMiddleware(true))
+	//r.Use(Middleware.AuthMiddleware(true))
 	//end_Auth_Middleware
 
 	home := r.Group("/home")
 	Controllers.Home(home.Group("/"))
 
 	//Casbin_Role_Middleware
+	//r.Use(Middleware.JWTAuthCasbinMiddleware(true))
 	//r.Use(Middleware.AuthCasbinMiddleware(true))
 	//end_Casbin_Role_Middleware
 

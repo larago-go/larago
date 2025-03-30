@@ -198,7 +198,7 @@ func ViewForgotPassword(c *gin.Context) {
 
 func ApiViewForgotPassword(c *gin.Context) {
 
-	c.IndentedJSON(http.StatusOK, gin.H{"csrf": csrf.GetToken(c)})
+	c.IndentedJSON(http.StatusOK, gin.H{"mess": "ok"})
 
 	//ForgotPassword.vue
 
@@ -215,8 +215,7 @@ func ApiViewRes_passListPrev(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"csrf": csrf.GetToken(c),
-		"url":  model.Url,
+		"url": model.Url,
 	})
 
 	//ResetPassword.vue

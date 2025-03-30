@@ -34,10 +34,7 @@ const created = () => {
       .then((response) => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
-        } else if (response.data.csrf === 'redirect_auth_login') {
-          router.push({ name: 'login' });
         } else {
-          datavw.value.csrf = response.data.csrf;
           datavw.value.session_id = response.data.session_id;
           datavw.value.session_name = response.data.session_name;
         }
@@ -51,7 +48,6 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
     Connect.post('/role/post_add', datavw.value.form)
       .then((response) => {
         response.rolename = '';

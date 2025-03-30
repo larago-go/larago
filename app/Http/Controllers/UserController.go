@@ -5,6 +5,7 @@ import (
 	"larago/config"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
@@ -256,22 +257,22 @@ func ApiViewUsersList(c *gin.Context) {
 	//Gorm_SQL
 	var model []Model.UserModel
 
-	session := sessions.Default(c)
-	sessionID := session.Get("user_id")
-	sessionName := session.Get("user_name")
+	claims, exists := c.Get("claims")
 
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+	if !exists {
+		c.IndentedJSON(http.StatusOK, gin.H{"redirect": "redirect_auth_login"})
 		c.Abort()
 	}
+
+	userClaims := claims.(*jwt.MapClaims)
+
+	user_name := (*userClaims)["user_name"].(string)
 
 	//Gorm_SQL
 	config.DB.Find(&model)
 
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"csrf":         csrf.GetToken(c),
-		"session_id":   sessionID,
-		"session_name": sessionName,
+		"session_name": user_name,
 		"list":         model,
 	})
 
@@ -281,19 +282,19 @@ func ApiViewUsersList(c *gin.Context) {
 
 func ApiViewAddUsers(c *gin.Context) { // Get model if exist
 
-	session := sessions.Default(c)
-	sessionID := session.Get("user_id")
-	sessionName := session.Get("user_name")
+	claims, exists := c.Get("claims")
 
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+	if !exists {
+		c.IndentedJSON(http.StatusOK, gin.H{"redirect": "redirect_auth_login"})
 		c.Abort()
 	}
 
+	userClaims := claims.(*jwt.MapClaims)
+
+	user_name := (*userClaims)["user_name"].(string)
+
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"csrf":         csrf.GetToken(c),
-		"session_id":   sessionID,
-		"session_name": sessionName,
+		"session_name": user_name,
 	})
 
 	//UsersAdd.vue
@@ -304,14 +305,17 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 
 	var model Model.UserModel
 
-	session := sessions.Default(c)
-	sessionID := session.Get("user_id")
-	sessionName := session.Get("user_name")
+	claims, exists := c.Get("claims")
 
-	if sessionID == nil {
-		c.IndentedJSON(http.StatusOK, gin.H{"csrf": "redirect_auth_login"})
+	if !exists {
+		c.IndentedJSON(http.StatusOK, gin.H{"redirect": "redirect_auth_login"})
 		c.Abort()
 	}
+
+	userClaims := claims.(*jwt.MapClaims)
+
+	user_name := (*userClaims)["user_name"].(string)
+
 	//Gorm_SQL
 	if err := config.DB.Where("id = ?", c.Param("id")).First(&model).Error; err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
@@ -319,9 +323,7 @@ func ApiViewUsersListPrev(c *gin.Context) { // Get model if exist
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"csrf":         csrf.GetToken(c),
-		"session_id":   sessionID,
-		"session_name": sessionName,
+		"session_name": user_name,
 		"id":           model.ID,
 		"name":         model.Name,
 		"email":        model.Email,

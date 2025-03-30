@@ -15,9 +15,26 @@ const InWebsite = () => {
 };
 
 const SessionOut = () => {
+
   Connect.get('/auth/api/signout');
+
+  localStorage.removeItem('token');  
+
   window.location.href = '/';
+
 };
+
+const token = localStorage.getItem('token');
+
+const user =  localStorage.getItem('user_name');
+
+const sessioncheck = () => {
+    if(!token) {
+          router.push({ name: 'login' });
+    }
+};
+
+sessioncheck();
 
 function toggleSidebar() {
   store.dispatch('toggleSidebar');

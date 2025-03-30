@@ -17,8 +17,10 @@ import FooterAdmin from '../FooterAdmin.vue';
 import Connect from '../../../confconnect';
 
 import 'datatables.net-select';
-  
+
 import 'datatables.net-searchbuilder-dt';
+
+import 'datatables.net-datetime';
 
 let dt;
 
@@ -28,10 +30,9 @@ const router = useRouter();
 
 const datavw = ref({
   lists: [],
-  session_id: '',
+  //session_id: '',
   session_name: '',
   error: '',
-  csrf: '',
 });
 
 const table = ref();
@@ -42,11 +43,8 @@ const created = () => {
       .then((response) => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
-        } else if (response.data.csrf === 'redirect_auth_login') {
-          router.push({ name: 'login' });
         } else {
-          datavw.value.csrf = response.data.csrf;
-          datavw.value.session_id = response.data.session_id;
+          //datavw.value.session_id = response.data.session_id;
           datavw.value.session_name = response.data.session_name;
           datavw.value.lists = response.data.list;
         }
@@ -59,7 +57,6 @@ const created = () => {
 created();
 
 const deleteId = (id) => {
-  Connect.defaults.headers.delete['X-CSRF-Token'] = datavw.value.csrf;
   Connect.delete("/users/api/list/" + id + "/delete");
   window.location.href = '/users/list';
 };
@@ -130,10 +127,11 @@ function remove() {
                class="stripe hover"
                width="100%"
                :options="{ select: true,
-                           dom: 'Qlfrtip'
+                           dom: 'QlfrtipB'
                          }"
                ref="table"
                />
+
         </div>
       </div>
     </div>

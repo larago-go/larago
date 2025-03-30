@@ -11,7 +11,6 @@ import Connect from '../../confconnect';
 const router = useRouter();
 
 const datavw = ref({
-  csrf: '',
   error: '',
   form: {
 
@@ -27,10 +26,6 @@ const created = () => {
       .then((response) => {
         if (response.data.error != null) {
           datavw.value.error = response.data.error;
-        } else if (response.data.csrf === 'redirect_home') {
-          router.push({ name: 'welcome' });
-        } else {
-          datavw.value.csrf = response.data.csrf;
         }
       });
   } catch (error) {
@@ -42,12 +37,13 @@ created();
 
 const submit = () => {
   try {
-    Connect.defaults.headers.post['X-CSRF-Token'] = datavw.value.csrf;
     Connect.post('/auth/signin', datavw.value.form)
       .then((response) => {
-        response.email = '';
-        response.password = '';
-        window.location.href = '/home';
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user_name', JSON.stringify(response.data.user_name));
+        localStorage.setItem('user_id', JSON.stringify(response.data.user_id));
+        localStorage.setItem('user_email', JSON.stringify(response.data.user_email));
+        router.push({ name: 'home' });
       });
   } catch (error) {
     datavw.value.error = error;
