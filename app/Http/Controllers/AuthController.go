@@ -158,6 +158,7 @@ func UsersLogin(c *gin.Context) {
 				"user_name":  model.Name,
 				"user_email": model.Email,
 				"user_id":    model.ID,
+				"user_role":  model.Role,
 				"token":      tokenString,
 			})
 		}
