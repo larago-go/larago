@@ -5,6 +5,7 @@ import (
 	"larago/app/Http/Middleware"
 	"larago/config"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	///sessions_redis
 	//"github.com/gin-contrib/sessions/redis"
@@ -31,6 +32,14 @@ func main() {
 	//gin.SetMode(gin.ReleaseMode)
 
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://127.0.0.1", "http://127.0.0.1:5173"},
+		AllowMethods:     []string{"PUT", "GET", "POST", "PATCH", "OPTIONS"},
+		AllowHeaders:     []string{"Accept-Language", "Authorization", "Content-Language", "X-CSRF-Token", "X-XSRF-Token", "Origin", "X-Requested-With", "Content-Type", "Accept", "Access-Control-Allow-Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	//Trusted_proxies
 	//r.SetTrustedProxies([]string{"192.168.1.2"})
