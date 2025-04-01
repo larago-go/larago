@@ -26,7 +26,7 @@ const SessionOut = () => {
 
 const token = localStorage.getItem('token');
 
-const user =  localStorage.getItem('user_name');
+const user = JSON.parse(localStorage.getItem('user_name')) || {};
 
 const sessioncheck = () => {
     if(!token) {

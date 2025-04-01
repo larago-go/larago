@@ -17,7 +17,8 @@ func ValidateToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.Request.Header.Get("Authorization")
 		if tokenString == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
+			//c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing token"})
+			c.HTML(http.StatusOK, "index.html", gin.H{"error": "Missing token"})
 			c.Abort()
 			return
 		}
